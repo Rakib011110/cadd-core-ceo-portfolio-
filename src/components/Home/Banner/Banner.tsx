@@ -209,8 +209,6 @@ const App = () => {
                 height={32}
               />
             </div>
-
-            {/* Floating Element 3: "Our daily new students" box (mimicking green box) */}
             <div className="absolute  bottom-0 right-0 z-10 transform translate-x-1/3 -translate-y-1/8 backdrop-blur-md  text-white p-4 rounded-2xl shadow-xl flex flex-col items-center justify-center  -rotate-3 hover:rotate-0 transition duration-300 text-sm md:text-base floating-element-3">
               <p className="font-semibold mb-2">Our daily new students</p>
               <div className="flex -space-x-2 overflow-hidden">
