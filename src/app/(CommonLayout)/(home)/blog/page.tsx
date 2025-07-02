@@ -174,7 +174,7 @@ export default function BlogPage() {
                 ))}
               </ul>
             </div>
-
+            {/*  */}
             <div className="bg-white p-6 rounded-lg border border-slate-200/80 mt-8">
               <h3 className="text-xl font-bold text-slate-900 mb-4">
                 Categories
@@ -324,3 +324,4 @@ export default function BlogPage() {
     </div>
   );
 }
+//  end                                     of file
