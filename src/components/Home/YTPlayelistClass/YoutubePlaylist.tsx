@@ -225,7 +225,7 @@ export default function VideoTrainingLibrary() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className=" font-sans">
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-16">

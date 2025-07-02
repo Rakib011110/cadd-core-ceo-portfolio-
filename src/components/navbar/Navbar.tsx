@@ -65,7 +65,14 @@ export const Navbar: FC = () => {
           <NavLink href="#" label="Home" />
           <NavLink href="#" label="Courses" />
           <NavLink href="#" label="Videos" />
-          <NavLink href="#" label="Blog" />
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary-foreground relative group py-2">
+            Blog
+            {/* Animated underline effect */}
+            <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary-foreground transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
+          </Link>
+
           <NavLink href="#" label="About" />
           <NavLink href="#" label="Contact" />
         </div>
