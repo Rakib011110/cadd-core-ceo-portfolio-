@@ -125,7 +125,7 @@ export const Navbar: FC = () => {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive rounded-md transition-colors">
-                Logout
+                <Link href={"/login"}> Login </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
