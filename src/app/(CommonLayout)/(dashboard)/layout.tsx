@@ -19,23 +19,29 @@ const navigationSections = [
     title: "Content Management",
     links: [
       {
-        href: "/admin/dashboard/my-courses",
+        href: "/dashboard/new-blog",
+        label: "Create New Blog",
+        icon: FileText,
+      },
+      {
+        href: "/dashboard/manage-blogs",
+        label: "Manage Blogs",
+        icon: FileText,
+      },
+      {
+        href: "/dashboard/my-courses",
         label: "My Courses",
         icon: BookOpen,
       },
       {
-        href: "/admin/dashboard/seminar-schedule",
+        href: "/dashboard/seminar-schedule",
         label: "Seminar Schedule",
         icon: Calendar,
       },
+
+      { href: "/dashboard/my-work", label: "My Work", icon: Briefcase },
       {
-        href: "/admin/dashboard/new-blog",
-        label: "Create New Blog",
-        icon: FileText,
-      },
-      { href: "/admin/dashboard/my-work", label: "My Work", icon: Briefcase },
-      {
-        href: "/admin/dashboard/upload-video",
+        href: "/dashboard/upload-video",
         label: "Upload Video",
         icon: Video,
       },
@@ -44,8 +50,8 @@ const navigationSections = [
   {
     title: "General",
     links: [
-      { href: "/admin/dashboard", label: "Dashboard", icon: Home },
-      { href: "/admin/dashboard/settings", label: "Settings", icon: Settings },
+      { href: "/dashboard", label: "Dashboard", icon: Home },
+      { href: "/dashboard/settings", label: "Settings", icon: Settings },
     ],
   },
 ];
@@ -169,7 +175,7 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
           onClick={() => {
             if (sidebarOpen) setSidebarOpen(false);
           }}>
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-6">
               Dashboard
             </h1>

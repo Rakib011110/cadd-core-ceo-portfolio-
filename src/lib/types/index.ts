@@ -100,3 +100,20 @@ export interface IIndustrialOfferBanner {
   createdAt?: string;
   updatedAt?: string;
 }
+
+interface ISoftware {
+  softwareTitle: string;
+  photoUrl: string;
+}
+
+export interface ICourse {
+  title: string;
+  duration: string;
+  _id: string;
+  lessons: string;
+  projects: string;
+  slug: string;
+  photoUrl: string;
+  category: string;
+  softwaresTaught: ISoftware[];
+}

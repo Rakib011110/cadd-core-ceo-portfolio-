@@ -14,6 +14,8 @@ import { getCurrentUser } from "@/lib/services/AuthService";
 const UserContext = createContext<IUserProviderValues | undefined>(undefined);
 
 interface IUserProviderValues {
+  email: string;
+  name: string;
   user: IUser | null;
   isLoading: boolean;
   setUser: (user: IUser | null) => void;
@@ -23,6 +25,9 @@ interface IUserProviderValues {
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const email = user?.email ?? "";
+  const name = user?.name ?? "";
 
   const handleUser = async () => {
     const user = await getCurrentUser();
@@ -36,7 +41,8 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   }, [isLoading]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
+    <UserContext.Provider
+      value={{ email, name, user, setUser, isLoading, setIsLoading }}>
       {children}
     </UserContext.Provider>
   );
