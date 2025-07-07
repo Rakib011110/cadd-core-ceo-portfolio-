@@ -67,23 +67,36 @@ const technologies = [
 
 export default function TechnologySection() {
   return (
-    <div className="bg-white dark:bg-gray-900 py-16 sm:py-24 transition-colors duration-300">
+    <div className="bg-white dark:bg-gray-900 py-8 sm:py-10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            Technologies We Work With
-          </h2>
-          <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-            We utilize industry-leading software to deliver precision and
-            excellence in every project.
-          </p>
-        </motion.div>
+          className="text-center mb-14  px-4">
+          <div className="relative inline-block max-w-2xl mx-auto">
+            {/* Decorative Corners */}
+            <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
 
+            {/* Title + Subtitle */}
+            <div className="px-8 py-4">
+              <h2 className="text-3xl sm:text-4xl uppercase font-bold text-gray-900 dark:text-white">
+                Technologies{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+                  We Work With
+                </span>
+              </h2>
+              <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
+                We utilize industry-leading software to deliver precision and
+                excellence in every project.
+              </p>
+            </div>
+          </div>
+        </motion.div>
         <motion.div
           variants={container}
           initial="hidden"

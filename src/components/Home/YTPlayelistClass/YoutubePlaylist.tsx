@@ -276,14 +276,29 @@ export default function VideoTrainingLibrary() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 bg-clip-text text-transparent mb-4 leading-tight">
-            Professional Video Training Library
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed">
-            Master specialized engineering topics with our comprehensive
-            collection of free training videos from industry experts.
-          </p>
+          className="text-center mb-16 px-4">
+          <div className="relative inline-block max-w-5xl mx-auto">
+            {/* Decorative Corners */}
+            <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+
+            {/* Title + Subtitle */}
+            <div className="px-8 py-4">
+              <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 bg-clip-text text-transparent mb-4 leading-tight uppercase">
+                Video{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+                  Training
+                </span>{" "}
+                Library
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
+                Learn key engineering skills from free expert-led training
+                videos.
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* Training Playlists Section */}

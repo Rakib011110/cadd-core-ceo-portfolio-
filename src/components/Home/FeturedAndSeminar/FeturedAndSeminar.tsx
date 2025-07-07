@@ -87,18 +87,30 @@ const formatSeminarDate = (dateString: string) => {
 
 export default function FeturedAndSeminar() {
   return (
-    <div className=" bg-gray-50 font-sans">
+    <div className="  font-sans">
       <div className="max-w-7xl mx-auto px-4 py-12 mt-10 sm:px-6 lg:px-8">
-        <div className="text-center   mb-10  mt-10">
-          <h1>
-            <p className="text-3xl font-bold text-gray-900 uppercase">
-              Featured Seminars & Products
-            </p>
-            <p className="text-lg text-gray-600">
-              {" "}
-              - Stay updated with our latest offerings
-            </p>
-          </h1>
+        <div className="text-center mb-14  px-4">
+          <div className="relative inline-block">
+            <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+            <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+
+            <h1 className="px-8 py-4">
+              <p className="text-4xl font-bold text-gray-900 dark:text-white uppercase mb-2">
+                Featured{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+                  Seminars
+                </span>{" "}
+                & Products
+              </p>
+              <p className="text-lg text-gray-500 dark:text-gray-400 flex items-center justify-center">
+                <span className="w-8 h-px bg-gray-300 dark:bg-gray-600 mr-3"></span>
+                Stay updated with our latest offerings
+                <span className="w-8 h-px bg-gray-300 dark:bg-gray-600 ml-3"></span>
+              </p>
+            </h1>
+          </div>
         </div>
 
         {/* New Seminars & Products Section */}

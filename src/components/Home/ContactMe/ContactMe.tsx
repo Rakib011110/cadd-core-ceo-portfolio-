@@ -34,15 +34,30 @@ const Contact = () => {
   };
 
   return (
-    <section className=" max-w-7xl mx-auto bg-white dark:bg-black px-4 py-12">
+    <section className=" max-w-7xl mx-auto  bg-white dark:bg-black px-4 py-12 border-t-4 rounded-lg ">
       {/* Section Title */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-800 dark:text-white">
-          📬 Get in Touch
-        </h2>
-        <p className="text-gray-500 dark:text-gray-400 mt-2">
-          Feel free to drop a message. I'll get back to you as soon as possible.
-        </p>
+      <div className="text-center mb-14 mt-14 px-4">
+        <div className="relative inline-block max-w-xl mx-auto">
+          {/* Decorative Corners */}
+          <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+          <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+          <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+          <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+
+          {/* Title + Subtitle */}
+          <div className="px-8 py-4">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+              📬{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+                Get in Touch
+              </span>
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400">
+              Feel free to drop a message. I’ll get back to you as soon as
+              possible.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Contact Layout */}
@@ -52,7 +67,7 @@ const Contact = () => {
           <Player
             autoplay
             loop
-            src="https://assets5.lottiefiles.com/packages/lf20_jtbfg2nb.json"
+            src="https://assets5.lottiefiles.com/packages/lf20_zrqthn6o.json"
             className="w-full h-full"
           />
         </div>
