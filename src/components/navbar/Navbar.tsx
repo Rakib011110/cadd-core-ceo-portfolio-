@@ -73,7 +73,7 @@ export const Navbar: FC = () => {
           <NavLink href="/" label="Home" />
           <NavLink href="/blog" label="Blog" />
 
-          <NavLink href="/courses" label="Courses" />
+          {/* <NavLink href="/courses" label="Courses" /> */}
           <NavLink href="/videos" label="Videos" />
 
           <NavLink href="/contact" label="Contact" />

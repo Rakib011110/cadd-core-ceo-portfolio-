@@ -1,4 +1,5 @@
 "use client";
+import { useCreateBlogMutation } from "@/redux/api/blogApi";
 import React, { useState, useEffect } from "react";
 
 // Utility function to generate slug from title
@@ -18,7 +19,9 @@ const NewBlogPage = () => {
     excerpt: "",
   });
 
-  // Automatically generate slug when title changes
+  const [createBlog, { isLoading }] = useCreateBlogMutation();
+
+  // Auto-generate slug from title
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -36,18 +39,32 @@ const NewBlogPage = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
+    const today = new Date().toISOString().split("T")[0];
     const blogData = {
       ...formData,
       tags: formData.tags.split(",").map((tag) => tag.trim()),
       date: today,
     };
 
-    console.log("Blog Submitted:", blogData);
-    // Add your API call here
+    try {
+      await createBlog(blogData).unwrap();
+      alert("✅ Blog created successfully!");
+
+      setFormData({
+        slug: "",
+        title: "",
+        category: "",
+        image: "",
+        tags: "",
+        excerpt: "",
+      });
+    } catch (err) {
+      console.error("❌ Blog create failed:", err);
+      alert("❌ Blog create failed!");
+    }
   };
 
   return (
@@ -133,8 +150,9 @@ const NewBlogPage = () => {
 
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          Submit Blog
+          {isLoading ? "Submitting..." : "Submit Blog"}
         </button>
       </form>
     </div>

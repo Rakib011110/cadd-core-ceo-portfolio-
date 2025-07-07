@@ -1,6 +1,8 @@
 "use client";
 
+import { ParticleCursor } from "../commonUi/mouseCoursor/mouseCoursor";
 import Banner from "./Banner/Banner";
+import Contact from "./ContactMe/ContactMe";
 import CoursesSection from "./CoursesSection/CoursesSection";
 import FeturedAndSeminar from "./FeturedAndSeminar/FeturedAndSeminar";
 import TechnologySection from "./SoftwarKnows/SoftwarKnows";
@@ -18,12 +20,15 @@ const Home = () => {
       <div className="mb-10 mt-10">
         <FeturedAndSeminar />
       </div>
+      <TechnologySection />
+
       <div className="mb-10 mt-10">
         <div className="text-center mb-8 "></div>
         <PlaylistAccordion />
       </div>
 
-      <TechnologySection />
+      <Contact />
+      <ParticleCursor />
     </div>
   );
 };

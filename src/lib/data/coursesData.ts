@@ -34,15 +34,18 @@ export const courses = [
     softwaresTaught: [
       {
         softwareTitle: "ETABS",
-        photoUrl: "/softwares/etabs.png",
+        photoUrl:
+          "https://res.cloudinary.com/dbkwiwoll/image/upload/v1744172798/ACAD-2D-01-01-1536x864_ca0eaq.png",
       },
       {
         softwareTitle: "SAFE",
-        photoUrl: "/softwares/safe.png",
+        photoUrl:
+          "https://res.cloudinary.com/dbkwiwoll/image/upload/v1744171388/excel-01_zk0uq7.png",
       },
       {
         softwareTitle: "Microsoft Excel",
-        photoUrl: "/softwares/excel.png",
+        photoUrl:
+          "https://res.cloudinary.com/dbkwiwoll/image/upload/v1744171434/WORD-01_cqxdov.png",
       },
     ],
   },
@@ -58,7 +61,8 @@ export const courses = [
     softwaresTaught: [
       {
         softwareTitle: "AutoCAD",
-        photoUrl: "/softwares/autocad.png",
+        photoUrl:
+          "https://res.cloudinary.com/dbkwiwoll/image/upload/v1744172798/ACAD-2D-01-01-1536x864_ca0eaq.png",
       },
     ],
   },
