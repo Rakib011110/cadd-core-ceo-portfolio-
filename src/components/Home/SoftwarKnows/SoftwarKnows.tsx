@@ -21,7 +21,7 @@ const item = {
     opacity: 1,
     transition: {
       duration: 0.5,
-      ease: [0.25, 0.1, 0.25, 1], // cubic-bezier equivalent of easeOut
+      ease: [0.25, 0.1, 0.25, 1],
     },
   },
   hover: {
@@ -76,7 +76,6 @@ export default function TechnologySection() {
           viewport={{ once: true }}
           className="text-center mb-14  px-4">
           <div className="relative inline-block max-w-2xl mx-auto">
-            {/* Decorative Corners */}
             <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
             <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
             <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
