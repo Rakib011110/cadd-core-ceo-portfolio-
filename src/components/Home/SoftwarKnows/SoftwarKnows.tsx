@@ -28,7 +28,7 @@ const item = {
     y: -10,
     transition: {
       duration: 0.3,
-      ease: [0.25, 0.1, 0.25, 1], // cubic-bezier equivalent of easeOut
+      ease: [0.25, 0.1, 0.25, 1],
     },
   },
 };
