@@ -1,6 +1,9 @@
-import SocialLinks from "@/components/commonUi/SocialLink";
-import Home from "@/components/Home/Home";
-import React from "react";
+import dynamic from "next/dynamic";
+
+const SocialLinks = dynamic(() => import("@/components/commonUi/SocialLink"), {
+  ssr: false,
+});
+const Home = dynamic(() => import("@/components/Home/Home"), { ssr: false });
 
 const HomeLayout = () => {
   return (
