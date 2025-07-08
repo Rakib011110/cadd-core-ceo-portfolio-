@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Home,
   BookOpen,
@@ -38,7 +39,11 @@ const navigationSections = [
         label: "Seminar Schedule",
         icon: Calendar,
       },
-
+      {
+        href: "/dashboard/add-new-badge",
+        label: "Add New Badge",
+        icon: Calendar,
+      },
       { href: "/dashboard/my-work", label: "My Work", icon: Briefcase },
       {
         href: "/dashboard/upload-video",
@@ -70,13 +75,14 @@ const NavLink: React.FC<NavLinkProps> = ({
   onClick,
 }) => (
   <li>
-    <a
+    <Link
       href={href}
       onClick={onClick}
-      className="flex items-center p-3 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+      className="flex items-center p-3 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+    >
       <Icon className="w-5 h-5 mr-3" />
       <span>{label}</span>
-    </a>
+    </Link>
   </li>
 );
 
@@ -97,17 +103,16 @@ const CollapsibleNavSection: React.FC<CollapsibleNavSectionProps> = ({
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center text-left text-sm font-semibold text-gray-400 uppercase p-3 hover:bg-gray-700 rounded-lg">
+        className="w-full flex justify-between items-center text-left text-sm font-semibold text-gray-400 uppercase p-3 hover:bg-gray-700 rounded-lg"
+      >
         {title}
         {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
       {isOpen && (
         <ul className="space-y-1 mt-2">
-          {links.map(
-            (link: NavLinkProps, linkIdx: React.Key | null | undefined) => (
-              <NavLink key={linkIdx} {...link} onClick={onClick} />
-            )
-          )}
+          {links.map((link: NavLinkProps, linkIdx: React.Key | null | undefined) => (
+            <NavLink key={linkIdx} {...link} onClick={onClick} />
+          ))}
         </ul>
       )}
     </div>
@@ -123,19 +128,17 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
     <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
       {/* Header for mobile */}
       <header className="md:hidden p-4 flex justify-between items-center bg-white dark:bg-gray-800 shadow-md">
-        <a
+        <Link
           href="/admin/dashboard"
-          className="font-bold text-lg text-gray-800 dark:text-white">
+          className="font-bold text-lg text-gray-800 dark:text-white"
+        >
           My Portfolio
-        </a>
+        </Link>
         <button
           className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-          onClick={() => setSidebarOpen(!sidebarOpen)}>
-          {sidebarOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </header>
 
@@ -147,7 +150,8 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
             fixed inset-y-0 left-0 transform md:relative md:translate-x-0
             transition-transform duration-300 ease-in-out z-30
             ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          `}>
+          `}
+        >
           <div className="hidden md:flex items-center space-x-3 px-3">
             <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center">
               <span className="text-xl font-bold">A</span>
@@ -174,7 +178,8 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
           className="flex-1 p-4 sm:p-6 lg:p-8"
           onClick={() => {
             if (sidebarOpen) setSidebarOpen(false);
-          }}>
+          }}
+        >
           <div className="max-w-6xl mx-auto">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-6">
               Dashboard
@@ -184,8 +189,7 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
                 children
               ) : (
                 <p className="text-gray-600 dark:text-gray-300">
-                  Welcome to your personal portfolio dashboard. Select an option
-                  from the sidebar to get started.
+                  Welcome to your personal portfolio dashboard. Select an option from the sidebar to get started.
                 </p>
               )}
             </div>
@@ -195,3 +199,9 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
     </div>
   );
 }
+// Sunday Tuesday, Thursday 
+// starday, wednesday, 
+
+
+//  auto cad 
+// sunday , wednesday

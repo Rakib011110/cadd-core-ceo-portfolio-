@@ -11,7 +11,7 @@ const CourseTabs = () => {
     course.category.includes(activeTab)
   );
 
-  return (
+  return ( 
     <div className=" max-w-6xl mx-auto mt-10 ">
       {/* 🔥 Section Heading */}
       <div className="text-center mb-14 mt-14 px-4">

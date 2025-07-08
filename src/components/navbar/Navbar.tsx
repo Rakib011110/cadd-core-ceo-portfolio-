@@ -31,6 +31,9 @@ import {
   User,
   LogOut,
   Settings,
+  Globe, // Added for Resources icon
+  FileText, // Example icon for a resource link
+  HelpCircle, // Example icon for another resource link
 } from "lucide-react";
 
 import { ThemeContext } from "../commonUi/ThemeProvider";
@@ -73,9 +76,44 @@ export const Navbar: FC = () => {
           <NavLink href="/" label="Home" />
           <NavLink href="/blog" label="Blog" />
 
-          {/* <NavLink href="/courses" label="Courses" /> */}
-          <NavLink href="/videos" label="Videos" />
+          {/* Resources Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors relative group py-2 px-1 cursor-pointer"
+                aria-label="Resources"
+              >
+                Resources
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-[2px] bg-primary group-hover:w-[80%] transition-all duration-300" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="start"
+              className="w-48 rounded-lg shadow-lg border-border/50 mt-2"
+            >
+              <DropdownMenuItem className="focus:bg-muted/50">
+                <Link href="/resources/articles" className="flex items-center w-full">
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>Articles</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="focus:bg-muted/50">
+                <Link href="/resources/tutorials" className="flex items-center w-full">
+                  <Video className="mr-2 h-4 w-4" />
+                  <span>Tutorials</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-border/50" />
+              <DropdownMenuItem className="focus:bg-muted/50">
+                <Link href="/resources/faq" className="flex items-center w-full">
+                  <HelpCircle className="mr-2 h-4 w-4" />
+                  <span>FAQ</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
+          <NavLink href="/videos" label="Videos" />
           <NavLink href="/contact" label="Contact" />
         </div>
 
@@ -179,6 +217,13 @@ export const Navbar: FC = () => {
                   icon={<Video className="h-4 w-4" />}
                   href="/videos"
                   label="Videos"
+                  setIsMobileMenuOpen={setIsMobileMenuOpen}
+                />
+                {/* Mobile Resources Dropdown - simplified for mobile */}
+                <MobileNavLink
+                  icon={<Globe className="h-4 w-4" />}
+                  href="/resources"
+                  label="Resources"
                   setIsMobileMenuOpen={setIsMobileMenuOpen}
                 />
                 <MobileNavLink

@@ -15,6 +15,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+
+
+
+
+
 type BadgeItem = {
   id: string;
   title: string;
@@ -51,21 +56,21 @@ const badgeData: BadgeItem[] = [
     title: "Microsoft Certified Trainer 2021-2022",
     issuer: "Microsoft",
     issueDate: "Jul 27, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751954524/Microsoft_Certified_Trainer_2021-2022_innpmk.png"
   },
   {
     id: "5",
     title: "Microsoft Office Specialist: Expert (Office 2019)",
     issuer: "Microsoft",
     issueDate: "Jun 27, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751954690/Microsoft_Office_Specialist_Associate_Office_2019_fsahcx.png"
   },
   {
     id: "6",
     title: "Microsoft Office Specialist: Microsoft Word Expert (Office 2019)",
     issuer: "Microsoft",
     issueDate: "Jun 27, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751954749/MOS_Excel_Expert6_q8z3ul.png"
   },
   {
     id: "7",
@@ -79,48 +84,49 @@ const badgeData: BadgeItem[] = [
     title: "Microsoft Office Specialist: Associate (Office 2019)",
     issuer: "Microsoft",
     issueDate: "Jun 14, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751954798/MOS_Word_Expert1_envf0s.png"
   },
   {
     id: "9",
     title: "Microsoft Office Specialist: PowerPoint Associate (Office 2019)",
     issuer: "Microsoft",
     issueDate: "Jun 14, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751965286/MOS_PowerPoint_wyfjym.png"
   },
   {
     id: "10",
     title: "Microsoft Office Specialist: Excel Associate (Office 2019)",
     issuer: "Microsoft",
     issueDate: "May 29, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751965354/MOS_Excel_qjpzxu.png"
   },
+
   {
     id: "11",
     title: "Microsoft Office Specialist: Word Associate (Office 2019)",
     issuer: "Microsoft",
     issueDate: "Feb 15, 2021",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751965396/MOS_Word_1_n3awxe.png"
   },
   {
     id: "12",
     title: "Autodesk Revit Architecture Certified User",
     issuer: "Autodesk",
     issueDate: "Jul 9, 2017",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751965450/image_tyydp0.png"
   },
   {
     id: "13",
     title: "Autodesk AutoCAD Certified User",
     issuer: "Autodesk",
     issueDate: "Jun 16, 2017",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751965519/Autodesk_AutoCAD_Certified_User_jbrrhp.png"
   },
   {
     id: "14",
-    title: "Autodesk Revit Certified User",
+    title: "AutoCAD Certified Professional",
     issuer: "Autodesk",
-    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751952018/Microsoft_Certified_Trainer_2022-2023_e3t2de.png"
+    photoUrl: "https://res.cloudinary.com/dalpf8iip/image/upload/v1751965557/Autodesk_AutoCAD_Professional_NV_ef3gyw.png"
   }
 ];
 
@@ -146,10 +152,7 @@ const BadgeWallet = () => {
   const badgesToShow = showAll ? filteredBadges : filteredBadges.slice(0, initialBadges);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-   
-
-
+    <div className="max-w-6xl mx-auto p-6 ">
  <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
