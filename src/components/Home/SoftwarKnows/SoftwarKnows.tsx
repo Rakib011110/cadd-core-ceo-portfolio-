@@ -68,7 +68,7 @@ const technologies = [
 export default function TechnologySection() {
   return (
     <div className="bg-white dark:bg-gray-900 py-8 sm:py-10 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

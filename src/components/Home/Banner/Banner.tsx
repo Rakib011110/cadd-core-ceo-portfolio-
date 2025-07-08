@@ -67,7 +67,7 @@ const App = () => {
         <div className="bg-ellipse hidden lg:block"></div>
         <div className="bg-dots hidden lg:block"></div>
 
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 relative z-10">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 relative z-10">
           {/* Text Area */}
           <div className="flex-1 text-center lg:text-left py-12 px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 text-gray-900 dark:text-white">

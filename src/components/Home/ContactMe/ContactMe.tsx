@@ -4,7 +4,14 @@
 
 import React, { useRef } from "react";
 import emailjs from "emailjs-com";
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
+
+
+const Player = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then(mod => mod.Player),
+  { ssr: false }
+);
+
 
 const Contact = () => {
   const form = useRef<HTMLFormElement>(null);

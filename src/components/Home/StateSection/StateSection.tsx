@@ -3,7 +3,7 @@ import React from "react";
 const StateSection = () => {
   return (
     <div>
-      <div className="grid mb-10 max-w-7xl mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
+      <div className="grid mb-10 max-w-6xl mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
         {/* Trained Students */}
         <div className="bg-yellow-50 p-6 rounded-lg text-center shadow-sm">
           <div className="text-yellow-500 text-4xl mb-2">💼</div>

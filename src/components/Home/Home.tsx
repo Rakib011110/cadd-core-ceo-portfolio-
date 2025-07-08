@@ -11,7 +11,7 @@ import PlaylistAccordion from "./YTPlayelistClass/YoutubePlaylist";
 
 const Home = () => {
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen  ">
       <Banner />
       <StateSection />
       <div className="mb-20 mt-20">

@@ -12,7 +12,7 @@ const CourseTabs = () => {
   );
 
   return (
-    <div className=" max-w-7xl mx-auto mt-10 ">
+    <div className=" max-w-6xl mx-auto mt-10 ">
       {/* 🔥 Section Heading */}
       <div className="text-center mb-14 mt-14 px-4">
         <div className="relative inline-block max-w-2xl mx-auto">
