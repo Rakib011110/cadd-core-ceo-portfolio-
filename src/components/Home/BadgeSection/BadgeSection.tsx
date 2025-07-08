@@ -24,7 +24,7 @@ type BadgeItem = {
   photoUrl?: string;
 };
 
-const badgeData = [
+const badgeData: BadgeItem[] = [
   {
     id: "1",
     title: "Autodesk Certified Instructor - Standard",

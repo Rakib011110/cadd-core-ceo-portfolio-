@@ -2,7 +2,6 @@
 
 import { ParticleCursor } from "../commonUi/mouseCoursor/mouseCoursor";
 import BadgeWallet from "./BadgeSection/BadgeSection";
-import BadgeSection from "./BadgeSection/BadgeSection";
 import Banner from "./Banner/Banner";
 import Contact from "./ContactMe/ContactMe";
 import CoursesSection from "./CoursesSection/CoursesSection";
