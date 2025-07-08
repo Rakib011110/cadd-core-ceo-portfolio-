@@ -1,6 +1,8 @@
 "use client";
 
 import { ParticleCursor } from "../commonUi/mouseCoursor/mouseCoursor";
+import BadgeWallet from "./BadgeSection/BadgeSection";
+import BadgeSection from "./BadgeSection/BadgeSection";
 import Banner from "./Banner/Banner";
 import Contact from "./ContactMe/ContactMe";
 import CoursesSection from "./CoursesSection/CoursesSection";
@@ -21,12 +23,21 @@ const Home = () => {
       <div className="mb-10 mt-10">
         <FeturedAndSeminar />
       </div>
+<BadgeWallet/>
+
+
       <TechnologySection />
+
+
 
       <div className="mb-10 mt-10">
         <div className="text-center mb-8 "></div>
+
+
         <PlaylistAccordion />
       </div>
+
+{/* <BadgeSection /> */}
 
       <Contact />
       <ParticleCursor />

@@ -52,10 +52,10 @@ const Contact = () => {
           <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
 
           {/* Title + Subtitle */}
-          <div className="px-8 py-4">
+          <div className="px-8 py-4 uppercase">
             <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
               📬{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r  from-blue-500 to-purple-600 ">
                 Get in Touch
               </span>
             </h2>

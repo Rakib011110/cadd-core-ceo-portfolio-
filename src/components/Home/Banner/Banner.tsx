@@ -149,13 +149,13 @@ const App = () => {
           {/* Right Section */}
           <div className="relative flex-1 flex justify-center lg:justify-end w-full lg:w-auto mt-12 lg:mt-0">
             <div className="absolute inset-0 flex items-center justify-center z-0">
-              <div className="w-[450px] h-[450px] sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] rounded-full bg-blue-600 dark:bg-blue-800 opacity-80 filter blur-3xl transform scale-105"></div>
+              <div className="w-[450px] h-[450px]  sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] rounded-full bg-blue-600 dark:bg-blue-800 opacity-80 filter blur-3xl transform scale-105"></div>
             </div>
 
             <img
               src="https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png"
               alt="Smiling Student"
-              className="relative z-10 w-72 h-96 sm:w-80 sm:h-[400px] lg:w-96 lg:h-[480px] object-cover rounded-3xl shadow-2xl transition-transform duration-500 hover:scale-105"
+              className="relative z-10 border-4 w-72 h-96  sm:w-80 sm:h-[400px] lg:w-96 lg:h-[480px] object-cover rounded-3xl shadow-2xl transition-transform duration-500 hover:scale-105"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.onerror = null;
