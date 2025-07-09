@@ -12,6 +12,7 @@ import {
   Video,
   ChevronDown,
 } from "lucide-react";
+import { useGetVideosQuery } from "@/redux/api/videoApi";
 
 // --- TYPE DEFINITIONS ---
 interface VideoItem {
@@ -30,6 +31,14 @@ interface VideosByPlaylistState {
 
 interface CurrentPagesState {
   [key: string]: number;
+}
+
+// Define the structure for a playlist, now including an optional thumbnail property
+interface Playlist {
+  description: string;
+  id: string;
+  title: string;
+  thumbnail?: string; // Added for playlist thumbnail
 }
 
 // --- YouTube API Response Types ---
@@ -58,26 +67,7 @@ interface YouTubeVideoDetail {
   };
 }
 
-// --- MOCK DATA & CONSTANTS ---
-const playlists = [
-  {
-    id: "PL7l9ZWmCGDbSfiAKmZblMOX7aaFyJCWJR",
-    title: "RCC Building Structural Analysis & Design Master Course",
-    icon: "🏗️",
-  },
-  {
-    id: "PL7l9ZWmCGDbSb-YMyMzHk5pvz0nk9jddV",
-    title: "Concrete Materials A to Z",
-    icon: "🧱",
-  },
-  {
-    id: "PL7l9ZWmCGDbRcqpXUojx_CLmf_zK6-s6m",
-    title: "BNBC-2020 Online Training Full Course",
-    icon: "📏",
-  },
-];
-
-const API_KEY = "AIzaSyBB2kiCQoB4fEt7ZPFxR0xUlRQAcIONrCk";
+const API_KEY = "AIzaSyBB2kiCQoB4fEt7ZPFxR0xUlRQAcIONrCk"; // Consider environment variable for production
 const VIDEOS_PER_PAGE = 3;
 
 // --- HELPER FUNCTIONS ---
@@ -144,6 +134,19 @@ const playlistVariants = {
 
 // --- MAIN COMPONENT ---
 export default function VideoTrainingLibrary() {
+  // 1. Call all Hooks unconditionally at the top level
+  const { data: videoData, isLoading: isPlaylistsLoading } = useGetVideosQuery({});
+
+  const playlists: Playlist[] =
+    videoData && Array.isArray(videoData.data)
+      ? videoData.data.map((item: any) => ({
+          id: item.playlistId,
+          title: item.title,
+          thumbnail: item.thumbnail,
+          description: item.description,
+        }))
+      : [];
+
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(
     playlists[0]?.id || null
   );
@@ -157,6 +160,45 @@ export default function VideoTrainingLibrary() {
     videoId: string;
     title: string;
   } | null>(null);
+  const [playlistThumbnails, setPlaylistThumbnails] = useState<{
+    [key: string]: string;
+  }>({});
+
+  const fetchPlaylistThumbnail = useCallback(
+    async (playlistId: string) => {
+      if (playlistThumbnails[playlistId]) return;
+
+      try {
+        const res = await fetch(
+          `https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${playlistId}&key=${API_KEY}`
+        );
+        const data = await res.json();
+
+        if (data.items && data.items.length > 0) {
+          const thumbnailUrl =
+            data.items[0].snippet.thumbnails.high?.url ||
+            data.items[0].snippet.thumbnails.medium?.url ||
+            `https://placehold.co/120x90/e0e0e0/ffffff?text=Playlist`;
+          setPlaylistThumbnails((prev) => ({
+            ...prev,
+            [playlistId]: thumbnailUrl,
+          }));
+        } else {
+          setPlaylistThumbnails((prev) => ({
+            ...prev,
+            [playlistId]: `https://placehold.co/120x90/e0e0e0/ffffff?text=Playlist`,
+          }));
+        }
+      } catch (error) {
+        console.error(`Error fetching thumbnail for playlist ${playlistId}:`, error);
+        setPlaylistThumbnails((prev) => ({
+          ...prev,
+          [playlistId]: `https://placehold.co/120x90/e0e0e0/ffffff?text=Error`,
+        }));
+      }
+    },
+    [playlistThumbnails]
+  );
 
   const fetchPlaylistVideos = useCallback(
     async (playlistId: string) => {
@@ -182,12 +224,14 @@ export default function VideoTrainingLibrary() {
           setVideosByPlaylist((prev) => ({ ...prev, [playlistId]: [] }));
           return;
         }
+
         const videoDetailsRes = await fetch(
           `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${videoIds.join(
             ","
           )}&key=${API_KEY}`
         );
         const videoDetailsData = await videoDetailsRes.json();
+
         const videoDetailsMap = new Map<string, YouTubeVideoDetail>(
           videoDetailsData.items.map((item: YouTubeVideoDetail) => [
             item.id,
@@ -232,6 +276,12 @@ export default function VideoTrainingLibrary() {
   );
 
   useEffect(() => {
+    playlists.forEach((pl) => {
+      fetchPlaylistThumbnail(pl.id);
+    });
+  }, [playlists, fetchPlaylistThumbnail]);
+
+  useEffect(() => {
     if (expandedPlaylist) {
       fetchPlaylistVideos(expandedPlaylist);
     }
@@ -268,8 +318,17 @@ export default function VideoTrainingLibrary() {
     document.body.style.overflow = "auto";
   };
 
+  // 2. Conditionally render the UI based on loading state
+  if (isPlaylistsLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-xl text-gray-700 dark:text-gray-300">
+        Loading playlists...
+      </div>
+    );
+  }
+
   return (
-    <div className="font-sans bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="font-sans bg-gray-50 dark:bg-gray-900 transition-colors duration-300 min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <motion.div
@@ -278,16 +337,14 @@ export default function VideoTrainingLibrary() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 px-4">
           <div className="relative inline-block max-w-5xl mx-auto">
-            {/* Decorative Corners */}
             <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
             <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
             <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
             <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
 
-            {/* Title + Subtitle */}
             <div className="px-8 py-4">
               <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 bg-clip-text text-transparent mb-4 leading-tight uppercase">
-                Video{" "}
+                FREE{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
                   Training
                 </span>{" "}
@@ -327,31 +384,47 @@ export default function VideoTrainingLibrary() {
                 {/* Playlist Header (Button) */}
                 <button
                   onClick={() => togglePlaylist(pl.id)}
-                  className="w-full p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <span className="text-3xl mr-4">{pl.icon}</span>
-                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">
+                  className="w-full p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200 flex items-center justify-between">
+                  <div className="flex items-center flex-grow">
+                    {playlistThumbnails[pl.id] ? (
+                      <img
+                        src={playlistThumbnails[pl.id]}
+                        alt={`${pl.title} thumbnail`}
+                        className="w-52 h-28 rounded-lg object-cover mr-4 shadow-sm flex-shrink-0"
+                        onError={(e) => {
+                          e.currentTarget.src = `https://placehold.co/96x72/e0e0e0/ffffff?text=Playlist`;
+                        }}
+                      />
+                    ) : (
+                      <div className="w-20 h-16 sm:w-24 sm:h-18 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center mr-4 text-gray-500 dark:text-gray-400 flex-shrink-0">
+                        <Video size={32} />
+                      </div>
+                    )}
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white line-clamp-2">
                         {pl.title}
                       </h2>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        {pl.description}
+                      </p>
                     </div>
-                    <div className="flex items-center">
-                      {videos.length > 0 && (
-                        <div className="hidden sm:flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-200/70 dark:bg-gray-700 px-3 py-1 rounded-full mr-4">
-                          <Video
-                            size={16}
-                            className="mr-2 text-gray-600 dark:text-gray-300"
-                          />
-                          {videos.length} Videos
-                        </div>
-                      )}
-                      <ChevronDown
-                        size={28}
-                        className={`text-gray-500 dark:text-gray-400 transform transition-transform duration-300 ${
-                          isExpanded ? "rotate-180" : ""
-                        }`}
-                      />
-                    </div>
+                  </div>
+                  <div className="flex items-center flex-shrink-0 ml-4">
+                    {videos.length > 0 && (
+                      <div className="hidden sm:flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-200/70 dark:bg-gray-700 px-3 py-1 rounded-full mr-4">
+                        <Video
+                          size={16}
+                          className="mr-2 text-gray-600 dark:text-gray-300"
+                        />
+                        {videos.length} Videos
+                      </div>
+                    )}
+                    <ChevronDown
+                      size={28}
+                      className={`text-gray-500 dark:text-gray-400 transform transition-transform duration-300 ${
+                        isExpanded ? "rotate-180" : ""
+                      }`}
+                    />
                   </div>
                 </button>
 
@@ -391,7 +464,7 @@ export default function VideoTrainingLibrary() {
                                 key={video.id}
                                 whileHover={{ y: -5 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-md hover:shadow-xl dark:hover:shadow-gray-800/50 transition-all duration-300 cursor-pointer"
+                                className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-md hover:shadow-xl dark:hover:shadow-gray-800/50 transition-all duration-300 cursor-pointer group"
                                 onClick={() =>
                                   handleVideoClick(video.videoId, video.title)
                                 }>
@@ -429,7 +502,6 @@ export default function VideoTrainingLibrary() {
                               </motion.div>
                             ))}
                           </motion.div>
-                          {/* Pagination */}
                           {totalPages > 1 && (
                             <motion.div
                               initial={{ opacity: 0, y: 10 }}

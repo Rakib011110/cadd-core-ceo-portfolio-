@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useMemo } from "react";
 import { Search, Filter } from "lucide-react";
 import { useGetBlogsQuery } from "@/redux/api/blogApi";
@@ -9,7 +10,7 @@ interface Blog {
   title: string;
   category: string;
   date: string;
-  image: string;
+  image?: string; // Made optional
   tags: string[];
   excerpt: string;
 }
@@ -77,26 +78,41 @@ export default function BlogPage() {
   };
 
   const filteredPosts = useMemo(() => {
-    return blogs.filter((post) => {
-      const postDate = new Date(post.date);
-      const postYear = postDate.getFullYear().toString();
-      const postMonth = postDate.toLocaleString("default", { month: "long" });
+    return blogs
+      .filter((post) => {
+        const postDate = new Date(post.date);
+        const postYear = postDate.getFullYear().toString();
+        const postMonth = postDate.toLocaleString("default", { month: "long" });
 
-      const categoryMatch =
-        filters.category === "All" || post.category === filters.category;
-      const yearMatch = filters.year === "All" || postYear === filters.year;
-      const monthMatch = filters.month === "All" || postMonth === filters.month;
-      const textMatch =
-        post.title.toLowerCase().includes(filters.text.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(filters.text.toLowerCase());
+        const categoryMatch =
+          filters.category === "All" || post.category === filters.category;
+        const yearMatch = filters.year === "All" || postYear === filters.year;
+        const monthMatch = filters.month === "All" || postMonth === filters.month;
+        const textMatch =
+          post.title.toLowerCase().includes(filters.text.toLowerCase()) ||
+          post.excerpt.toLowerCase().includes(filters.text.toLowerCase());
 
-      return categoryMatch && yearMatch && monthMatch && textMatch;
-    });
+        return categoryMatch && yearMatch && monthMatch && textMatch;
+      })
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by newest first
   }, [blogs, filters]);
 
   const visiblePosts = filteredPosts.slice(0, visibleCount);
 
-  const recentArticles = useMemo(() => blogs.slice(0, 4), [blogs]);
+  const recentArticles = useMemo(() => 
+    [...blogs]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 4), 
+    [blogs]
+  );
+
+  const handleRecentArticleClick = (postId: string) => {
+    const postElement = document.getElementById(postId);
+    if (postElement) {
+      postElement.scrollIntoView({ behavior: "smooth" });
+      setExpandedPostId(postId);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -110,7 +126,7 @@ export default function BlogPage() {
 
   return (
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen font-sans text-slate-800 dark:text-slate-100 p-4 sm:p-8">
-      <div className="max-w-screen-xl mx-auto">
+      <div className="max-w-screen-lg mx-auto">
         <header className="mb-8">
           <div className="relative">
             <input
@@ -138,12 +154,16 @@ export default function BlogPage() {
                 {recentArticles.map((article) => (
                   <li
                     key={article._id}
-                    className="flex items-center space-x-3 group cursor-pointer">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-12 h-12 object-cover rounded-md"
-                    />
+                    onClick={() => handleRecentArticleClick(article._id)}
+                    className="flex items-start space-x-3 group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 p-2 rounded-lg transition-colors"
+                  >
+                    {article.image && (
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="w-12 h-12 object-cover rounded-md flex-shrink-0"
+                      />
+                    )}
                     <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
                       {article.title}
                     </span>
@@ -230,17 +250,20 @@ export default function BlogPage() {
                   return (
                     <div
                       key={post._id}
+                      id={post._id}
                       className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200/80 dark:border-slate-700 overflow-hidden shadow-sm">
-                      <div className="relative border-4 border-slate-100 dark:border-slate-700 m-2 rounded-lg overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md mb-4"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                        <CivilTechLogos />
-                      </div>
-                      <div className="p-8">
+                      {post.image && (
+                        <div className="relative border-4 border-slate-100 dark:border-slate-700 m-2 rounded-lg overflow-hidden">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md mb-4"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                          <CivilTechLogos />
+                        </div>
+                      )}
+                      <div className={`p-8 ${!post.image ? 'pt-8' : ''}`}>
                         <div className="flex justify-between items-center mb-3">
                           <p className="text-sm text-slate-500 dark:text-slate-400">
                             {post.date}

@@ -113,8 +113,8 @@ export const Navbar: FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <NavLink href="/videos" label="Videos" />
-          <NavLink href="/contact" label="Contact" />
+          <NavLink href="/videos" label="Training" />
+          {/* <NavLink href="/contact" label="Contact" /> */}
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4">
@@ -216,7 +216,7 @@ export const Navbar: FC = () => {
                 <MobileNavLink
                   icon={<Video className="h-4 w-4" />}
                   href="/videos"
-                  label="Videos"
+                  label="Training"
                   setIsMobileMenuOpen={setIsMobileMenuOpen}
                 />
                 {/* Mobile Resources Dropdown - simplified for mobile */}

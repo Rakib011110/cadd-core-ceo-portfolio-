@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import CommonButton from "@/components/commonUi/CommonButton/CommonButton";
 
 const CourseCard: React.FC<{
   title: string;
@@ -89,9 +90,16 @@ const CourseCard: React.FC<{
             )}
 
             {/* Button */}
-            <div className="font-semibold text-red-500 flex items-center gap-1.5 transition-all duration-300 group-hover:gap-2.5">
-              বিস্তারিত দেখুন
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <div className="font-semibold  text-red-500 flex items-center gap-1.5 transition-all duration-300 group-hover:gap-2.5">
+        
+
+<CommonButton >
+ <p className="flex items-center gap-1">
+   View Course <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+ </p>
+</CommonButton>
+
+            
             </div>
           </div>
         </Card>

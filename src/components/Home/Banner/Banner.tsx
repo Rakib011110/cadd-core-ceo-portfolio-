@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { TypeAnimation } from "react-type-animation";
 
-const App = () => {
+const Banner = () => {
   return (
     <>
       <style>{`
@@ -67,10 +67,10 @@ const App = () => {
         <div className="bg-ellipse hidden lg:block"></div>
         <div className="bg-dots hidden lg:block"></div>
 
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 relative z-10">
+        <div className="max-w-6xl   mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 relative z-10">
           {/* Text Area */}
           <div className="flex-1 text-center lg:text-left py-12 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 text-gray-900 dark:text-white">
+            <h1 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold leading-tight mb-4 text-gray-900 dark:text-white">
               <span className="block">Engr. Hachnayen Ahmed</span>
               <TypeAnimation
                 sequence={[
@@ -86,9 +86,9 @@ const App = () => {
                   2000,
                 ]}
                 wrapper="span"
-                speed={50}
+                speed={40}
                 repeat={Infinity}
-                className="text-blue-600 dark:text-yellow-400 block text-2xl sm:text-3xl lg:text-4xl mt-2 font-semibold"
+                className="text-blue-600 dark:text-yellow-400 block text-xl sm:text-3xl lg:text-4xl mt-2 font-semibold"
               />
             </h1>
 
@@ -225,4 +225,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Banner;

@@ -93,7 +93,7 @@ const MyCoursesPageManage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-lg mx-auto px-4 py-8">
       <div className="flex flex-col space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>

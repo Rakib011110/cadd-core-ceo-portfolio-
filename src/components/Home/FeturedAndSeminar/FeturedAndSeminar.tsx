@@ -30,7 +30,11 @@ const seminarsData: Seminar[] = [
     type: "Paid",
     price: 5000,
     link: "#",
-  },
+  }, 
+
+
+
+  
   {
     topic: "Professional AutoCAD Mastercourse (Civil & Arch)",
     place: "ONLINE",

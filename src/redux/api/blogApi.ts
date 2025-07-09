@@ -17,6 +17,7 @@ const BlogApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Blog"],
     }),
+    
     getSingleBlog: builder.query({
       query: (id) => ({
         url: `/blogs/${id}`,

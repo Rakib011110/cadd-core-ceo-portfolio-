@@ -46,8 +46,13 @@ const navigationSections = [
       },
       { href: "/dashboard/my-work", label: "My Work", icon: Briefcase },
       {
-        href: "/dashboard/upload-video",
+        href: "/dashboard/add-videos",
         label: "Upload Video",
+        icon: Video,
+      },
+      {
+        href: "/dashboard/manage-video",
+        label: "Manage Video",
         icon: Video,
       },
     ],
@@ -199,9 +204,3 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
     </div>
   );
 }
-// Sunday Tuesday, Thursday 
-// starday, wednesday, 
-
-
-//  auto cad 
-// sunday , wednesday

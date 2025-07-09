@@ -3,7 +3,7 @@ import Home from "@/components/Home/Home";
 
 const HomeLayout = () => {
   return (
-    <div>
+    <div className=" ">
       <Home />
       <SocialLinks />
     </div>
