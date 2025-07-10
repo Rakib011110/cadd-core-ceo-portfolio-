@@ -1,18 +1,10 @@
-// Filename: app/about/page.tsx
-
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import {
-  ArrowDown,
-  ArrowUp,
-  Briefcase,
-  Code,
-  Lightbulb,
-  Target,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { useRef, useEffect, useState, ReactNode } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import { aboutSections } from "@/pages/About/aboutdata";
+
+
 
 const GlobalStyles = () => (
   <style jsx global>{`
@@ -59,7 +51,9 @@ const GlobalStyles = () => (
     }
     .center-line-icon {
       animation: pulse 2.5s infinite ease-in-out;
-    }
+    } 
+
+    
     .icon-up {
       animation-name: move-up, pulse;
       animation-duration: 5s, 2.5s;
@@ -120,23 +114,29 @@ const GlobalStyles = () => (
   `}</style>
 );
 
-type ContentBlockProps = {
+
+const ContentBlock = ({
+  children,
+  className = "",
+  delay = 0,
+}: {
   children: ReactNode;
   className?: string;
   delay?: number;
-};
-
-const ContentBlock = ({ children, className = "", delay = 0 }: ContentBlockProps) => {
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setTimeout(() => setIsVisible(true), delay);
-        observer.disconnect();
-      }
-    }, { threshold: 0.1 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
 
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -145,17 +145,81 @@ const ContentBlock = ({ children, className = "", delay = 0 }: ContentBlockProps
   return (
     <div
       ref={ref}
-      className={`
-        bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 mb-8
-        transition-all duration-700 ease-out will-change-transform
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-        ${className}
-      `}
+      className={`bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 mb-8 transition-all duration-700 ease-out will-change-transform ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      } ${className}`}
     >
       {children}
     </div>
   );
 };
+
+const SectionRenderer = ({ side }: { side: "left" | "right" }) => {
+  return (
+    <> 
+    <div>
+        <GlobalStyles />
+    </div>
+      {aboutSections
+        .filter((section) => section.side === side)
+        .map((block, index) => (
+          <ContentBlock key={index} delay={index * 100}>
+            {block.imageUrl && block.imagePosition === "top" && (
+              <img
+                src={block.imageUrl}
+                alt="section-img"
+                className="w-full mb-4 rounded-md"
+              />
+            )}
+
+            <div className="flex items-center mb-4">{block.icon}<h2 className="text-2xl font-semibold">{block.title}</h2></div>
+
+            {block.description && (
+              <p className="text-base leading-relaxed text-[var(--text-secondary)]">
+                {block.description}
+              </p>
+            )}
+
+            {block.tags && (
+              <div className="flex flex-wrap gap-3 mt-4">
+                {block.tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-sky-400/50 bg-sky-400/10 px-3 py-1 text-sm font-medium text-sky-300 transition duration-300 hover:bg-sky-500/20 hover:text-white hover:shadow-md hover:shadow-sky-400/30"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {block.isVideo && (
+              <div className="aspect-video w-full rounded-lg overflow-hidden border border-[var(--border-color)] bg-black/20 mt-4">
+                <div className="w-full h-full flex items-center justify-center text-[var(--text-secondary)]">
+                    <iframe
+                        src={`https://www.youtube.com/embed/XiC4hIKsjIY?si=V_1xle3dsUrFcNTx`}
+                        title={block.title}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                </div>
+              </div>
+            )}
+
+            {block.imageUrl && block.imagePosition === "bottom" && (
+              <img
+                src={block.imageUrl}
+                alt="section-img"
+                className="w-full mt-4 rounded-md"
+              />
+            )}
+          </ContentBlock>
+        ))}
+    </>
+  );
+};
+
 
 const CenterLine = () => (
   <div className="center-line relative hidden w-0.5 lg:block">
@@ -173,108 +237,26 @@ const CenterLine = () => (
     </div>
   </div>
 );
-
 export default function AboutPage() {
   return (
-    <>
-      <GlobalStyles />
-      <main className="max-w-6xl mx-auto min-h-screen overflow-x-hidden px-4 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] lg:gap-12">
-          {/* Left Section - CADD CORE */}
-          <div className="left-section">
-            <ContentBlock delay={0}>
-              <h1 className="text-4xl text-center font-bold md:text-6xl lg:text-left">CADD CORE</h1>
-            </ContentBlock>
-
-            <ContentBlock delay={100}>
-              <div className="flex items-center mb-4">
-                <TrendingUp className="w-8 h-8 mr-4 text-sky-400" />
-                <h2 className="text-2xl font-semibold">Our Journey</h2>
-              </div>
-              <p className="text-base leading-relaxed text-[var(--text-secondary)]">
-                We started as a small initiative with a big vision. Through dedication and innovation, we have reached where we are today, focusing on Civil, AutoCAD, and professional design training.
-              </p>
-            </ContentBlock>
-
-            <ContentBlock delay={200}>
-              <div className="flex items-center mb-4">
-                <Users className="w-8 h-8 mr-4 text-sky-400" />
-                <h2 className="text-2xl font-semibold">Our Team</h2>
-              </div>
-              <p className="text-base leading-relaxed text-[var(--text-secondary)]">
-                Behind our success is a passionate team of talented individuals including CAD experts, civil engineers, and creative instructors dedicated to real-world technical skills.
-              </p>
-            </ContentBlock>
-
-           <ContentBlock delay={300}>
-  <h3 className="text-xl font-semibold mb-4 flex items-center">
-    <Code className="w-6 h-6 mr-3 text-sky-400" />
-    Tools & Technologies
-  </h3>
-  <div className="flex flex-wrap gap-3 items-center">
-    {[
-      "AutoCAD",
-      "Revit",
-      "Etabs",
-      "SAFE",
-      "STAAD.Pro",
-      "Tekla Structures",
-    ].map((tool) => (
-      <span
-        key={tool}
-        className="rounded-full border border-sky-400/50 bg-sky-400/10 px-3 py-1 text-sm font-medium text-sky-300 transition duration-300 hover:bg-sky-500/20 hover:text-white hover:shadow-md hover:shadow-sky-400/30"
-      >
-        {tool}
-      </span>
-    ))}
-  </div>
-</ContentBlock>
-
-          </div>
-
-          {/* Center Line */}
-          <CenterLine />
-
-          {/* Right Section - MAK Consultants */}
-          <div className="right-section mt-8 lg:mt-0">
-            <ContentBlock delay={50}>
-              <h1 className="text-4xl text-center font-bold md:text-6xl lg:text-left">MAK Consultants</h1>
-            </ContentBlock>
-
-            <ContentBlock delay={150}>
-              <div className="flex items-center mb-4">
-                <Lightbulb className="w-8 h-8 mr-4 text-sky-400" />
-                <h2 className="text-2xl font-semibold">Engineering & Innovation</h2>
-              </div>
-              <p className="text-base leading-relaxed text-[var(--text-secondary)]">
-                We are committed to improving lives through engineering solutions in civil, architecture, and structural design. Innovation is at the core of our consultancy.
-              </p>
-            </ContentBlock>
-
-            <ContentBlock delay={250}>
-              <div className="flex items-center mb-4">
-                <Target className="w-8 h-8 mr-4 text-sky-400" />
-                <h2 className="text-2xl font-semibold">Future Vision</h2>
-              </div>
-              <p className="text-base leading-relaxed text-[var(--text-secondary)]">
-                Our aim is to expand globally by exploring emerging technologies like AI, BIM, and sustainable design solutions to deliver smarter infrastructure.
-              </p>
-            </ContentBlock>
-
-            <ContentBlock delay={350}>
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <Briefcase className="w-6 h-6 mr-3 text-sky-400" />
-                Project Highlights
-              </h3>
-              <div className="aspect-video w-full rounded-lg overflow-hidden border border-[var(--border-color)] bg-black/20">
-                <div className="w-full h-full flex items-center justify-center text-[var(--text-secondary)]">
-                  <p>Video embed placeholder</p>
-                </div>
-              </div>
-            </ContentBlock>
-          </div>
+    <main className="max-w-6xl mx-auto min-h-screen overflow-x-hidden px-4 py-24">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] lg:gap-12">
+        <div className="left-section">
+          <ContentBlock delay={0}>
+            <h1 className="text-3xl text-center font-bold md:text-6xl lg:text-left">CADD CORE</h1>
+          </ContentBlock>
+          <SectionRenderer side="left" />
         </div>
-      </main>
-    </>
+
+        <CenterLine />
+
+        <div className="right-section mt-8 lg:mt-0">
+          <ContentBlock delay={50}>
+            <h1 className="text-5xl text-center font-bold md:text-5xl lg:text-left">MAK Consultants</h1>
+          </ContentBlock>
+          <SectionRenderer side="right" />
+        </div>
+      </div>
+    </main>
   );
 }
