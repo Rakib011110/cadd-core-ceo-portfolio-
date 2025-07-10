@@ -33,7 +33,7 @@ const CourseCard: React.FC<{
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="group h-full">
       <Link href={`/courses/${slug}`} className="block h-full">
-        <Card className="p-0 flex flex-col h-full rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-500 transition-colors duration-300 shadow-sm hover:shadow-lg">
+        <Card className="p-0 flex flex-col h-full rounded-lg overflow-hidden bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-500 transition-colors duration-300 shadow-sm hover:shadow-lg">
           {/* Image Section */}
           <div className="relative h-48 w-full overflow-hidden">
             <Image

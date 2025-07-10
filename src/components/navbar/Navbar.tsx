@@ -61,7 +61,7 @@ export const Navbar: FC = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60 transition-all duration-300">
+    <nav className="sticky font-sans top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60 transition-all duration-300">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
@@ -114,7 +114,7 @@ export const Navbar: FC = () => {
           </DropdownMenu>
 
           <NavLink href="/videos" label="Training" />
-          {/* <NavLink href="/contact" label="Contact" /> */}
+          <NavLink href="/about" label="About" />
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4">

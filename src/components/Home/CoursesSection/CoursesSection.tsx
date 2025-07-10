@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CourseCard from "./CourseCard";
 import { courses } from "@/lib/data/coursesData";
+import CommonButton from "@/components/commonUi/CommonButton/CommonButton";
 
 const categories = ["All", "Civil", "Architectural", "Bim"];
 
@@ -39,21 +40,32 @@ const CourseTabs = () => {
       </div>
 
       {/* 🔖 Tabs */}
-      <div className="flex flex-wrap justify-center gap-9 mb-8 backdrop-blur-lg bg-blue-100 p-3 ">
+      <div className="flex flex-wrap justify-center gap-9 mb-8 backdrop-blur-lg dark:bg-gray-950 dark:border-2 dark:border-blue-950 bg-blue-100 p-3 ">
         {categories.map((cat) => (
-          <button
-            key={cat}
+        <CommonButton     key={cat}>
+
+  <p
+        
             onClick={() => setActiveTab(cat)}
             className={`px-4 py-2 rounded-md   text-sm font-semibold border transition-all duration-300
               ${
                 activeTab === cat
-                  ? "bg-blue-600 text-white border-blue-700"
-                  : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+                  ? ""
+                  : ""
               }`}>
             {cat} Courses
-          </button>
+          </p>
+
+        </CommonButton>
         ))}
       </div>
+
+
+
+
+
+
+
 
       {/* 📚 Course Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

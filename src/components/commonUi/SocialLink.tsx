@@ -8,65 +8,55 @@ const SocialLinks = () => {
       id: 1,
       child: (
         <>
-          LinkedIn <FaLinkedin size={30} />
+          LinkedIn <FaLinkedin size={30} className="text-blue-700" />
         </>
       ),
-      href: "https://www.linkedin.com",
-      style: "",
-      download: false,
+      href: "https://linkedin.com/in/hachnayen",
     },
     {
       id: 2,
       child: (
         <>
-          Facebook <FaFacebook size={30} />
+          Facebook <FaFacebook size={30} className="text-blue-600" />
         </>
       ),
-      href: "", // Replace with your actual FB URL
-      style: "",
-      download: false,
+      href: "https://facebook.com/hachnayenofficial",
     },
     {
       id: 3,
       child: (
         <>
-          Mail <HiOutlineMail size={30} />
+          Email <HiOutlineMail size={30} className="text-rose-600" />
         </>
       ),
-      href: "mailto:foo@gmail.com", // Update email if needed
-      style: "",
-      download: false,
+      href: "mailto:hachnayen@gmail.com",
     },
     {
       id: 4,
       child: (
         <>
-          WhatsApp <FaWhatsapp size={30} />
+          WhatsApp <FaWhatsapp size={30} className="text-green-600" />
         </>
       ),
-      href: "https://wa.me/8801XXXXXXXXX", // Replace with your WhatsApp number
-      style: "",
-      download: false,
+      href: "https://wa.me/8801711486779",
     },
+   
   ];
 
   return (
-    <div className="hidden lg:flex flex-col top-[35%] left-0 fixed">
+    <div className="hidden lg:flex flex-col top-[35%] left-0 fixed z-50">
       <ul>
-        {links.map(({ id, child, href, style, download }) => (
+        {links.map(({ id, child, href }) => (
           <li
             key={id}
-            className={
-              "flex justify-between items-center bg-blue-50 border-2 w-40 h-14 px-4 ml-[-90px] hover:ml-[-10px] hover:rounded-md duration-300 backdrop-blur-2xl border-r shadow-lg" +
-              " " +
-              (style || "")
-            }>
+            className="group flex justify-between items-center w-40 h-14 px-4 ml-[-110px] hover:ml-[-10px] hover:rounded-xl duration-300 bg-white/10 backdrop-blur-md border border-white/20 shadow-lg hover:shadow-2xl hover:scale-[1.05] transition-all ease-in-out rounded-r-2xl"
+          >
             <a
               href={href}
-              className="flex justify-between items-center w-full btn text-blue-700 hover:text-red-500"
-              download={download}
+              className="flex justify-between items-center w-full text-white font-medium group-hover:text-blue-500"
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               {child}
             </a>
           </li>

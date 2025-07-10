@@ -12,7 +12,7 @@ import PlaylistAccordion from "./YTPlayelistClass/YoutubePlaylist";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="font-sans">
       <Banner />
       <StateSection />
       <div className="mb-20 mt-20">

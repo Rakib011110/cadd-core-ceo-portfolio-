@@ -122,7 +122,7 @@ export default function FeturedAndSeminar() {
           {/* Upcoming Seminars Column */}
           <div>
             <div className="flex justify-between items-center mb-6 border-b-2 border-blue-500 pb-2">
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                 Upcoming Seminars
               </h2>
               <a
@@ -131,47 +131,49 @@ export default function FeturedAndSeminar() {
                 VIEW ALL →
               </a>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               {seminarsData.map((seminar, index) => {
                 const { month, day } = formatSeminarDate(seminar.date);
                 return (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                    <div className="text-center">
-                      <p className="text-sm font-bold text-red-600">{month}</p>
-                      <p className="text-3xl font-extrabold text-gray-800">
-                        {day}
-                      </p>
-                    </div>
+                 <div
+  key={index}
+  className="flex items-start space-x-4 p-5 rounded-xl border border-blue-900/40 bg-white dark:bg-gray-950 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.01]"
+>
+  <div className="text-center min-w-[60px]">
+    <p className="text-sm font-bold text-red-600">{month}</p>
+    <p className="text-3xl font-extrabold text-gray-800 dark:text-white">{day}</p>
+  </div>
 
-                    <div className="flex-1 border-l-2 pl-4">
-                      <h3 className="font-bold text-lg text-gray-900 mb-1">
-                        {seminar.topic}
-                      </h3>
+  <div className="flex-1 border-l-2 border-blue-200 dark:border-blue-800 pl-4">
+    <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1">
+      {seminar.topic}
+    </h3>
 
-                      <div className="flex items-center text-md text-gray-500 mb-3">
-                        <MapPin size={14} className="mr-2" /> {seminar.place}
-                        <Clock size={14} className="ml-4 mr-2" /> {seminar.time}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        {seminar.type === "Free" ? (
-                          <span className="text-xs font-bold bg-green-100 text-green-800 px-3 py-1 rounded-full">
-                            FREE
-                          </span>
-                        ) : (
-                          <span className="text-xs font-bold bg-orange-100 text-orange-800 px-3 py-1 rounded-full">
-                            ৳{seminar.price}
-                          </span>
-                        )}
-                        <a
-                          href={seminar.link}
-                          className="flex items-center text-sm font-bold text-blue-600 hover:text-blue-800">
-                          Register Now <ArrowRight size={16} className="ml-1" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+    <div className="flex items-center text-md text-gray-500 dark:text-gray-300 mb-3">
+      <MapPin size={14} className="mr-2" /> {seminar.place}
+      <Clock size={14} className="ml-4 mr-2" /> {seminar.time}
+    </div>
+
+    <div className="flex items-center justify-between">
+      {seminar.type === "Free" ? (
+        <span className="text-xs font-bold bg-green-100 text-green-800 px-3 py-1 rounded-full shadow-sm">
+          FREE
+        </span>
+      ) : (
+        <span className="text-xs font-bold bg-orange-100 text-orange-800 px-3 py-1 rounded-full shadow-sm">
+          ৳{seminar.price}
+        </span>
+      )}
+      <a
+        href={seminar.link}
+        className="flex items-center text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition"
+      >
+        Register Now <ArrowRight size={16} className="ml-1" />
+      </a>
+    </div>
+  </div>
+</div>
+
                 );
               })}
             </div>
@@ -180,7 +182,7 @@ export default function FeturedAndSeminar() {
           {/* Featured Products Column */}
           <div>
             <div className="flex justify-between items-center mb-6 border-b-2 border-gray-700 pb-2">
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                 Featured Products
               </h2>
               <a
@@ -191,31 +193,36 @@ export default function FeturedAndSeminar() {
             </div>
             <div className="space-y-4">
               {productsData.map((product, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                  <div className="w-20 h-20 bg-gray-100 rounded-md flex items-center justify-center text-3xl">
-                    {product.imagePlaceholder}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg text-gray-900">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 my-1 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <div className="flex items-center justify-between mt-2">
-                      <p className="text-lg font-extrabold text-blue-600">
-                        ৳{product.price}
-                      </p>
-                      <a
-                        href={product.link}
-                        className="flex items-center text-sm font-bold text-gray-700 hover:text-blue-600">
-                        View Details <ShoppingCart size={16} className="ml-2" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
+               <div
+  key={index}
+  className="flex items-start space-x-4 p-5 bg-white dark:bg-gray-900 border border-blue-900/30 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.25)] transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.01]"
+>
+  <div className="w-20 h-20 bg-gray-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-3xl text-gray-700 dark:text-white shadow-inner">
+    {product.imagePlaceholder}
+  </div>
+
+  <div className="flex-1">
+    <h3 className="font-bold text-lg text-gray-900 dark:text-white">
+      {product.name}
+    </h3>
+    <p className="text-sm text-gray-600 dark:text-gray-300 my-1 line-clamp-2">
+      {product.description}
+    </p>
+
+    <div className="flex items-center justify-between mt-2">
+      <p className="text-lg font-extrabold text-blue-600 dark:text-blue-400">
+        ৳{product.price}
+      </p>
+      <a
+        href={product.link}
+        className="flex items-center text-sm font-bold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-300 transition"
+      >
+        View Details <ShoppingCart size={16} className="ml-2" />
+      </a>
+    </div>
+  </div>
+</div>
+
               ))}
             </div>
           </div>
