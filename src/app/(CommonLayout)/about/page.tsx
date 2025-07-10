@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, ReactNode } from "react";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { aboutSections } from "@/pages/About/aboutdata";
+import { aboutSections } from "@/lib/data/aboutdata";
 
 
 
