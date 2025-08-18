@@ -8,6 +8,7 @@ const categories = ["All", "Civil", "Architectural", "Bim"];
 const CourseTabs = () => {
   const [activeTab, setActiveTab] = useState("All");
 
+
   const filteredCourses = courses.filter((course) =>
     course.category.includes(activeTab)
   );

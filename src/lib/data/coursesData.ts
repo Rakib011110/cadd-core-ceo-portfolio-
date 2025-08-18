@@ -4,7 +4,7 @@ export const courses = [
     duration: "4 Months",
     lessons: "40 Lessons",
     projects: "30 Projects",
-    slug: "revit-course",
+    slug: "https://www.caddcore.net/courses/professional-architectural-bim-modeling-mastercourse",
     photoUrl:
       "https://res.cloudinary.com/dalpf8iip/image/upload/v1750143983/35d766a1-d10a-49de-b22f-1b2a62145551_itvbg2.jpg",
     category: ["All", "Civil", "Architectural", "Bim"],
@@ -27,7 +27,7 @@ export const courses = [
     duration: "6 Months",
     lessons: "60 Lessons",
     projects: "50 Projects",
-    slug: "rcc-structural",
+    slug: "https://www.caddcore.net/courses/rcc-building-structural-analysis-design-mastercourse",
     photoUrl:
       "https://res.cloudinary.com/dbkwiwoll/image/upload/v1750155204/cadd-core/rcc-building-structural-analysis-design-mastercourse_odrvpy.jpg",
     category: ["All", "Civil", "Bim"],
@@ -54,7 +54,7 @@ export const courses = [
     duration: "5 Months",
     lessons: "40 Lessons",
     projects: "30 Projects",
-    slug: "autocad-master",
+    slug: "https://www.caddcore.net/courses/professional-autocad-mastercourse",
     photoUrl:
       "https://res.cloudinary.com/dbkwiwoll/image/upload/v1750248217/cadd-core/WhatsApp_Image_2025-06-18_at_5.46.02_PM_dkunqz.jpg",
     category: ["All", "Civil", "Architectural"],
