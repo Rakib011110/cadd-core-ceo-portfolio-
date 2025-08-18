@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { FieldValues } from 'react-hook-form';
 import { axiosInstance } from "@/lib/AxiosInstance";
+import { IApiError, IDecodedToken } from "@/lib/types";
 
 export const registerUser = async (userData: FieldValues) => {
   try {
@@ -15,18 +16,19 @@ export const registerUser = async (userData: FieldValues) => {
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const apiError = error as IApiError;
     // Extract the error message from the response
-    const errorMessage = error.response?.data?.message || 
-                        error.response?.data?.error || 
-                        error.message || 
+    const errorMessage = apiError.response?.data?.message || 
+                        apiError.response?.data?.error || 
+                        apiError.message || 
                         "Registration failed. Please try again.";
     
     // Return an error object that can be safely passed to client
     return {
       success: false,
       error: errorMessage,
-      statusCode: error.response?.status || 500
+      statusCode: apiError.response?.status || 500
     };
   }
 };
@@ -41,18 +43,19 @@ export const loginUser = async (userData: FieldValues) => {
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const apiError = error as IApiError;
     // Extract the error message from the response
-    const errorMessage = error.response?.data?.message || 
-                        error.response?.data?.error || 
-                        error.message || 
+    const errorMessage = apiError.response?.data?.message || 
+                        apiError.response?.data?.error || 
+                        apiError.message || 
                         "Login failed. Please try again.";
     
     // Return an error object that can be safely passed to client
     return {
       success: false,
       error: errorMessage,
-      statusCode: error.response?.status || 500
+      statusCode: apiError.response?.status || 500
     };
   }
 };
@@ -65,10 +68,10 @@ export const logout = async () => {
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
 
-  let decodedToken = null;
+  let decodedToken: IDecodedToken | null = null;
 
   if (accessToken) {
-    decodedToken = await jwtDecode(accessToken);
+    decodedToken = jwtDecode<IDecodedToken>(accessToken);
 
     return {
       _id: decodedToken._id,
@@ -81,4 +84,6 @@ export const getCurrentUser = async () => {
       profilePhoto: decodedToken.profilePhoto,
     };
   }
+
+  return null;
 };

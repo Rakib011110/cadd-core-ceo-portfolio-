@@ -5,12 +5,57 @@ export interface IUser {
   role: USER_ROLE;
   email: string;
   status: string;
-  emailVerified: any;
+  emailVerified: boolean;
   mobileNumber: string;
   profilePhoto: string;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;
+}
+
+// Auth response types
+export interface IAuthResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+  statusCode?: number;
+  data?: {
+    accessToken: string;
+    refreshToken: string;
+    user?: IUser;
+  };
+}
+
+export interface IAuthError {
+  success: false;
+  error: string;
+  statusCode?: number;
+}
+
+// API Error types
+export interface IApiError {
+  response?: {
+    data?: {
+      message?: string;
+      error?: string;
+    };
+    status?: number;
+  };
+  message?: string;
+}
+
+// JWT Decoded token type
+export interface IDecodedToken {
+  _id: string;
+  name: string;
+  email: string;
+  mobileNumber: string;
+  role: USER_ROLE;
+  status: string;
+  emailVerified: boolean;
+  profilePhoto: string;
+  iat?: number;
+  exp?: number;
 }
 
 export interface IPayment {
@@ -24,13 +69,7 @@ export interface IPayment {
   updatedAt?: Date;
 }
 
-export type USER_ROLE = {
-  ADMIN: "ADMIN";
-  USER: "USER";
-  HR: "HR";
-  MARKETING_TEAM: "MARKETING_TEAM";
-  CUSTOMER_SERVICE_TEAM: "CUSTOMER_SERVICE_TEAM";
-};
+export type USER_ROLE = "ADMIN" | "USER" | "HR" | "MARKETING_TEAM" | "CUSTOMER_SERVICE_TEAM";
 
 export interface IInput {
   variant?: "flat" | "bordered" | "faded" | "underlined";

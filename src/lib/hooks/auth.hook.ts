@@ -2,14 +2,14 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query"; 
 
-
 import { getCurrentUser, loginUser, registerUser } from "../services/AuthService/index";
 import { useUser } from "@/context/user.provider";
+import { IAuthResponse } from "../types";
 
 export const useUserRegistration = () => {
   const { setUser } = useUser();
 
-  return useMutation<any, Error, FieldValues>({
+  return useMutation<IAuthResponse, Error, FieldValues>({
     mutationKey: ["USER_REGISTRATION"],
     mutationFn: async (userData: FieldValues) => await registerUser(userData),
     onSuccess: async (data) => {
@@ -34,7 +34,7 @@ export const useUserRegistration = () => {
 export const useUserLogin = () => {
   const { setUser } = useUser();
 
-  return useMutation<any, Error, FieldValues>({
+  return useMutation<IAuthResponse, Error, FieldValues>({
     mutationKey: ["USER_LOGIN"],
     mutationFn: loginUser,
     onSuccess: async (data) => {

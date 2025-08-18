@@ -1,9 +1,10 @@
 import { getServerSideSitemap, ISitemapField } from 'next-sitemap'
+import { GetServerSidePropsContext } from 'next'
 
 // This is an example of a server-side sitemap
 // You can use this if you have dynamic content that needs to be included in the sitemap
 
-export async function getServerSideProps(ctx: any) {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   // Method to source urls from cms
   // const urls = await fetch('https//example.com/api')
 
@@ -35,7 +36,7 @@ export async function getServerSideProps(ctx: any) {
     // Add more static pages as needed
   ]
 
-  return getServerSideSitemap(ctx, fields)
+  return getServerSideSitemap(fields, ctx)
 }
 
 // Default export to prevent next.js errors

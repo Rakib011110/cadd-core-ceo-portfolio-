@@ -36,9 +36,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check if email is verified
-  // Fix: Ensure boolean comparison
-  const isEmailVerified =
-    user.emailVerified === true || user.emailVerified === "true";
+  const isEmailVerified = user.emailVerified === true;
   if (
     !isEmailVerified &&
     (pathname.startsWith("/dashboard") || pathname.startsWith("/user-profile"))
