@@ -71,18 +71,18 @@ const mockPosts: Post[] = [
 
 // --- HELPER COMPONENTS ---
 
-const CivilTechLogos = () => (
-  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4">
-    {["Re", "At", "ET"].map((text) => (
-      <div
-        key={text}
-        className="w-12 h-12 bg-slate-800/20 p-2 rounded-full backdrop-blur-sm flex items-center justify-center border border-white/20"
-      >
-        <p className="text-xl font-bold text-white">{text}</p>
-      </div>
-    ))}
-  </div>
-);
+// const CivilTechLogos = () => (
+//   <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4">
+//     {["Re", "At", "ET"].map((text) => (
+//       <div
+//         key={text}
+//         className="w-12 h-12 bg-slate-800/20 p-2 rounded-full backdrop-blur-sm flex items-center justify-center border border-white/20"
+//       >
+//         <p className="text-xl font-bold text-white">{text}</p>
+//       </div>
+//     ))}
+//   </div>
+// );
 
 // This component now handles YouTube embeds
 const PostMedia = ({ image, video }: { image?: string; video?: string }) => {
