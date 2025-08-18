@@ -136,7 +136,7 @@ const playlistVariants = {
 export default function VideoTrainingLibrary() {
   // 1. Call all Hooks unconditionally at the top level
   const { data: videoData, isLoading: isPlaylistsLoading } = useGetVideosQuery({});
-
+console.log("Video Data:", videoData);
   const playlists: Playlist[] =
     videoData && Array.isArray(videoData.data)
       ? videoData.data.map((item: any) => ({
