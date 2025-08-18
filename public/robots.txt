@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /api/
+
+# Host
+Host: https://www.hachnayen.com
+
+# Sitemaps
+Sitemap: https://www.hachnayen.com/sitemap.xml
