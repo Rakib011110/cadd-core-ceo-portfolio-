@@ -49,7 +49,7 @@ const SeminarSchedule = () => {
   };
 
   return (
-    <div className="md:max-w-3xl mx-auto mt-8 p-4 sm:p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-6xl mx-auto mt-8 p-4 sm:p-6 bg-white rounded-lg shadow-lg">
       <Toaster position="top-right" />
       <h1 className="text-3xl font-bold mb-4 text-center text-blue-700">Seminar Schedule</h1>
       <p className="text-gray-600 mb-6 text-center">

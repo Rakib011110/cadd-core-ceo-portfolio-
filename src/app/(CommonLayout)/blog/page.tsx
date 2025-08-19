@@ -1,73 +1,22 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter,  BookOpen, Loader2 } from "lucide-react";
+import { useGetBlogsQuery } from "@/redux/api/blogApi";
 
-// --- MOCK DATA & TYPES ---
-interface Post {
+// --- BLOG INTERFACE ---
+interface BlogPost {
   _id: string;
   slug: string;
   title: string;
   category: string;
   date: string;
   image?: string;
-  video?: string; // Can be a direct video link or a YouTube embed URL
+  video?: string;
   tags: string[];
-  excerpt: string;
+  description: string;
 }
 
-const mockPosts: Post[] = [
-  {
-    _id: "1",
-    slug: "ai-in-civil-engineering",
-    title: "AI Integration in Structural Stress Prediction",
-    category: "Technology",
-    date: "2024-07-15",
-    image: "https://placehold.co/800x450/3b82f6/ffffff?text=AI+Dashboard",
-    video: "https://www.youtube.com/embed/FwOTs4UxQS4?si=jWoRx9_jSRkEMTgN", // YouTube Embed Link
-    tags: ["AI", "Engineering", "Innovation"],
-    excerpt: "A deep dive into our new project that integrates AI with civil engineering to predict structural stress. It's been a long journey, but the results are promising! Above, you can see a snapshot of the dashboard and a video demonstrating the system in action.",
-  },
-  {
-    _id: "2",
-    slug: "suspension-bridge-visit",
-    title: "A Visit to the New Suspension Bridge",
-    category: "Structural",
-    date: "2024-07-14",
-    image: "https://placehold.co/800x450/8b5cf6/ffffff?text=Bridge+Photo",
-    tags: ["Bridges", "Construction"],
-    excerpt: "An incredible day visiting the new suspension bridge. The engineering is just breathtaking. Here's a picture from the visit, showcasing the scale and elegance of the structure.",
-  },
-  {
-    _id: "3",
-    slug: "composite-materials-tutorial",
-    title: "Tutorial: Advanced Composite Materials",
-    category: "Materials",
-    date: "2024-07-13",
-    video: "https://www.youtube.com/embed/fiz1_C2_I4Y", // YouTube Embed Link
-    tags: ["Tutorial", "Composites"],
-    excerpt: "We've released a new tutorial on using advanced composite materials in construction. Watch the full guide above for detailed instructions and examples.",
-  },
-  {
-    _id: "4",
-    slug: "future-of-urban-planning",
-    title: "The Future of Urban Planning",
-    category: "Urbanism",
-    date: "2024-07-12",
-    tags: ["Sustainability", "Cities"],
-    excerpt: "A quick thought: The future of urban planning needs to prioritize green spaces and sustainable infrastructure more than ever. It's not just about building bigger, but building smarter and healthier cities for everyone. This requires a shift in mindset from developers, planners, and citizens alike.",
-  },
-  {
-    _id: "5",
-    slug: "3d-modeling-advances",
-    title: "Advances in 3D Modeling for Construction",
-    category: "Technology",
-    date: "2024-07-11",
-    image: "https://placehold.co/800x450/10b981/ffffff?text=3D+Model",
-    tags: ["BIM", "3D"],
-    excerpt: "Exploring the latest software and techniques in 3D modeling that are revolutionizing the construction industry, from initial design to final implementation.",
-  },
-];
 
 // --- HELPER COMPONENTS ---
 
@@ -84,44 +33,65 @@ const mockPosts: Post[] = [
 //   </div>
 // );
 
-// This component now handles YouTube embeds
+// This component handles YouTube embeds and images
 const PostMedia = ({ image, video }: { image?: string; video?: string }) => {
-  // Don't render anything if there's no media
   if (!image && !video) {
     return null;
   }
 
-  const isYoutubeEmbed = video && video.includes("youtube.com/embed");
+  const isYoutubeUrl = video && (video.includes("youtube.com") || video.includes("youtu.be"));
+  const getYoutubeEmbedUrl = (url: string) => {
+    if (url.includes("youtube.com/embed")) return url;
+    if (url.includes("youtube.com/watch?v=")) {
+      const videoId = url.split("watch?v=")[1]?.split("&")[0];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    if (url.includes("youtu.be/")) {
+      const videoId = url.split("youtu.be/")[1]?.split("?")[0];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return url;
+  };
 
   return (
-    <div className="relative border-4 border-slate-100 dark:border-slate-700 m-2 rounded-lg overflow-hidden">
+    <div className="relative overflow-hidden">
       <div className={`grid gap-1 ${image && video ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"}`}>
         {image && (
-          <img
-            src={image}
-            alt="Post content"
-            className="w-full h-auto object-cover"
-            onError={(e) => e.currentTarget.src='https://placehold.co/800x450/ef4444/ffffff?text=Image+Error'}
-          />
+          <div className="relative group">
+            <img
+              src={image}
+              alt="Post content"
+              className="w-full h-64 md:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => {
+                e.currentTarget.src = 'https://placehold.co/800x450/3b82f6/ffffff?text=Blog+Image';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
         )}
-        {video &&
-          (isYoutubeEmbed ? (
-            <div className="w-full aspect-video">
-              <iframe
-                className="w-full h-full"
-                src={video}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
-            </div>
-          ) : (
-            // Fallback for non-YouTube video links
-            <video controls src={video} className="w-full h-full bg-black"></video>
-          ))}
+        {video && isYoutubeUrl && (
+          <div className="w-full aspect-video">
+            <iframe
+              className="w-full h-full"
+              src={getYoutubeEmbedUrl(video)}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
+        )}
+        {video && !isYoutubeUrl && (
+          <video 
+            controls 
+            src={video} 
+            className="w-full h-64 md:h-80 object-cover bg-gray-900 rounded-lg"
+            poster={image}
+          >
+            Your browser does not support the video tag.
+          </video>
+        )}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
     </div>
   );
 };
@@ -129,31 +99,34 @@ const PostMedia = ({ image, video }: { image?: string; video?: string }) => {
 
 // --- MAIN PAGE COMPONENT ---
 export default function BlogPage() {
-  // In a real app, you would use your useGetBlogsQuery hook here.
-  // For this example, we use the mock data.
-  const isLoading = false;
-  const blogs: Post[] = mockPosts;
+  // Fetch blogs from API
+  const { data: apiResponse, isLoading, isError, error } = useGetBlogsQuery({});
+  const blogs: BlogPost[] = apiResponse?.data || [];
 
   const [filters, setFilters] = useState({
     category: "All",
-    year: "All",
+    year: "All", 
     month: "All",
     text: "",
   });
 
-  const [visibleCount, setVisibleCount] = useState(10);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
-      new Set(blogs.map((post) => post.category))
+      new Set(blogs.map((post) => post.category).filter(Boolean))
     );
     return ["All", ...uniqueCategories];
   }, [blogs]);
 
   const years = useMemo(() => {
-    const y = blogs.map((p) => new Date(p.date).getFullYear().toString());
-    return ["All", ...Array.from(new Set(y))];
+    const validDates = blogs
+      .map((p) => p.date)
+      .filter(Boolean)
+      .map((date) => new Date(date).getFullYear().toString())
+      .filter((year) => !isNaN(Number(year)));
+    return ["All", ...Array.from(new Set(validDates))];
   }, [blogs]);
 
   const months = [
@@ -166,12 +139,14 @@ export default function BlogPage() {
   ) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
-    setVisibleCount(10);
+    setVisibleCount(6);
   };
 
   const filteredPosts = useMemo(() => {
     return blogs
       .filter((post) => {
+        if (!post.date) return true;
+        
         const postDate = new Date(post.date);
         const postYear = postDate.getFullYear().toString();
         const postMonth = postDate.toLocaleString("default", { month: "long" });
@@ -181,19 +156,19 @@ export default function BlogPage() {
         const monthMatch = filters.month === "All" || postMonth === filters.month;
         const textMatch =
           post.title.toLowerCase().includes(filters.text.toLowerCase()) ||
-          post.excerpt.toLowerCase().includes(filters.text.toLowerCase());
+          post.description.toLowerCase().includes(filters.text.toLowerCase());
 
         return categoryMatch && yearMatch && monthMatch && textMatch;
       })
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      .sort((a, b) => new Date(b.date || '').getTime() - new Date(a.date || '').getTime());
   }, [blogs, filters]);
 
   const visiblePosts = filteredPosts.slice(0, visibleCount);
 
   const recentArticles = useMemo(() =>
     [...blogs]
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 4),
+      .sort((a, b) => new Date(b.date || '').getTime() - new Date(a.date || '').getTime())
+      .slice(0, 5),
     [blogs]
   );
 
@@ -205,12 +180,47 @@ export default function BlogPage() {
     }
   };
 
+  // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl font-semibold text-blue-600 dark:text-blue-400">
-          Loading blogs...
-        </p>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+          <p className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+            Loading blogs...
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            Please wait while we fetch the latest articles
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (isError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="text-center p-8">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-8 h-8 text-red-600 dark:text-red-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Failed to Load Blogs
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            {error && 'data' in error ? 
+              (error.data as { message: string })?.message || 'Something went wrong while fetching blogs' :
+              'Network error occurred'
+            }
+          </p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -325,11 +335,11 @@ export default function BlogPage() {
                       <div className="p-8">
                         <div className="flex justify-between items-center mb-3">
                           <p className="text-sm text-slate-500 dark:text-slate-400">
-                            {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            {post.date ? new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'No date'}
                           </p>
                           <div className="flex flex-wrap gap-2">
-                            {post.tags.map((tag) => (
-                              <span key={tag} className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-bold px-3 py-1 rounded-full">
+                            {post.tags?.map((tag, index) => (
+                              <span key={`${tag}-${index}`} className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-bold px-3 py-1 rounded-full">
                                 {tag}
                               </span>
                             ))}
@@ -339,8 +349,8 @@ export default function BlogPage() {
                           {post.title}
                         </h1>
                         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                          {isExpanded ? post.excerpt : post.excerpt.slice(0, 300)}
-                          {post.excerpt.length > 300 && (
+                          {isExpanded ? post.description : post.description?.slice(0, 300)}
+                          {post.description?.length > 300 && (
                             <button
                               onClick={() => setExpandedPostId(prev => prev === post._id ? null : post._id)}
                               className="text-blue-600 dark:text-blue-400 font-semibold ml-2 hover:underline"

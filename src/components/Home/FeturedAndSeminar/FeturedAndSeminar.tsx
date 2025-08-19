@@ -1,6 +1,8 @@
 "use client";
 
+import {  useGetSeminarsQuery } from "@/redux/api/seminarApi";
 import { ArrowRight, Clock, MapPin, ShoppingCart } from "lucide-react";
+import { Key } from "react";
 
 interface Seminar {
   topic: string;
@@ -21,63 +23,31 @@ interface Product {
 }
 
 // --- MOCK DATA ---
-const seminarsData: Seminar[] = [
-  {
-    topic: "RCC Building Structural Analysis Design & Detailing Mastercourse",
-    place: "ONLINE",
-    date: "2025-07-04",
-    time: "9:00 PM",
-    type: "Paid",
-    price: 5000,
-    link: "#",
-  }, 
-
-
-
-  
-  {
-    topic: "Professional AutoCAD Mastercourse (Civil & Arch)",
-    place: "ONLINE",
-    date: "2025-07-10",
-    time: "8:00 PM",
-    type: "Free",
-    link: "#",
-  },
-  {
-    topic: "Professional Architectural BIM Modeling Mastercourse",
-    place: "ONLINE",
-    date: "2025-07-18",
-    time: "9:00 PM",
-    type: "Paid",
-    price: 7500,
-    link: "#",
-  },
-];
 
 const productsData: Product[] = [
   {
     name: "BIM Modeling Using Revit Mastercourse",
-    price: 30000,
+    price: 12000,
     description:
       "A comprehensive course covering everything from basic to advanced structural analysis and design using Revit.",
     imagePlaceholder: "🏗️",
-    link: "#",
+    link: "https://www.caddcore.net/courses/professional-architectural-bim-modeling-mastercourse",
   },
   {
     name: "Professional AutoCAD Mastercourse",
-    price: 3000,
+    price: 10000,
     description:
       "Master AutoCAD for civil and architectural drafting. Learn 2D drawings and 3D modeling from scratch.",
     imagePlaceholder: "📐",
-    link: "#",
+    link: "https://www.caddcore.net/courses/professional-autocad-mastercourse",
   },
   {
     name: "RCC Building Structural Analysis, Design and Detailing Mastercourse",
-    price: 3000,
+    price: 15000,
     description:
       "An in-depth course on RCC building design, covering analysis, design principles, and detailing techniques.",
     imagePlaceholder: "📖",
-    link: "#",
+    link: "https://www.caddcore.net/courses/rcc-building-structural-analysis-design-mastercourse",
   },
 ];
 
@@ -89,7 +59,13 @@ const formatSeminarDate = (dateString: string) => {
   return { month, day };
 };
 
+
+
+
 export default function FeturedAndSeminar() {
+
+const { data: seminar } = useGetSeminarsQuery({});
+const seminarsData = seminar?.data || [];
   return (
     <div className="  font-sans">
       <div className="max-w-6xl mx-auto px-4 py-12 mt-10 sm:px-6 lg:px-8">
@@ -124,7 +100,7 @@ export default function FeturedAndSeminar() {
             <div className="flex justify-between items-center mb-6 border-b-2 border-blue-500 pb-2">
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                 Upcoming Seminars
-              </h2>
+              </h2> 
               <a
                 href="#"
                 className="text-sm font-semibold text-blue-600 hover:text-blue-800">
@@ -132,7 +108,7 @@ export default function FeturedAndSeminar() {
               </a>
             </div>
             <div className="space-y-4 ">
-              {seminarsData.map((seminar, index) => {
+              {seminarsData.map((seminar: Seminar, index: Key | null | undefined ) => {
                 const { month, day } = formatSeminarDate(seminar.date);
                 return (
                  <div
