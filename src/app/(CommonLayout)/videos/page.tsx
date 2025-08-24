@@ -74,6 +74,11 @@ const API_KEY = "AIzaSyBB2kiCQoB4fEt7ZPFxR0xUlRQAcIONrCk";
 
 const playlists: Playlist[] = [
   {
+    id: "PLTUWmhRt6CDvQmcMb_FZX7lcx-9Z3HTVT",
+    title: "Structural Detailing BNBC 2020 , ACI 318-19",
+    icon: "🏗️",
+  },
+  {
     id: "PL7l9ZWmCGDbSfiAKmZblMOX7aaFyJCWJR",
     title: "RCC Building Structural Analysis & Design Master Course",
     icon: "🏗️",
