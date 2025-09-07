@@ -173,7 +173,7 @@ export const Navbar: FC = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/login">
+            <Link className="hidden md:block" href="#">
               <Button className="rounded-full px-5 font-semibold bg-primary hover:bg-primary/90 shadow-sm">
                 Join Event
               </Button>

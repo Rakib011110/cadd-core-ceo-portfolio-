@@ -21,7 +21,11 @@ const Home = () => {
 
       <div className="mb-10 mt-10">
         <FeturedAndSeminar />
-      </div>
+      </div>  
+      
+
+
+
 <BadgeWallet/>
 
 
