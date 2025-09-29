@@ -6,7 +6,30 @@ import { playlists, API_KEY, VIDEOS_PER_PAGE_ALL } from "./constants";
 import LoadingSkeleton from "./LoadingSkeleton";
 import VideoCard from "./VideoCard";
 
-interface YouTubePlaylistItem { snippet: any; id: string }
+interface YouTubePlaylistItem {
+  snippet: {
+    title: string;
+    publishedAt: string;
+    thumbnails: {
+      high?: { url: string };
+      medium?: { url: string };
+    };
+    resourceId: {
+      videoId: string;
+    };
+  };
+  id: string;
+}
+
+interface YouTubeVideoDetails {
+  id: string;
+  contentDetails: {
+    duration: string;
+  };
+  statistics: {
+    viewCount: string;
+  };
+}
 
 const AllVideosView: React.FC<{ onVideoSelect: (v: VideoItem) => void }> = ({ onVideoSelect }) => {
   const [videos, setVideos] = useState<VideoItem[]>([]);
@@ -29,11 +52,11 @@ const AllVideosView: React.FC<{ onVideoSelect: (v: VideoItem) => void }> = ({ on
         const ids = allItems.map((i) => i.snippet.resourceId.videoId).filter(Boolean);
         const detailsRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${ids.join(",")}&key=${API_KEY}`);
         const detailsJson = await detailsRes.json();
-        const detailsMap = new Map(detailsJson.items.map((it: any) => [it.id, it]));
+        const detailsMap = new Map<string, YouTubeVideoDetails>(detailsJson.items.map((it: YouTubeVideoDetails) => [it.id, it]));
 
         const formatted = allItems.map((it) => {
           const vid = it.snippet.resourceId.videoId;
-          const det: any = detailsMap.get(vid);
+          const det = detailsMap.get(vid);
           return {
             id: it.id,
             title: it.snippet.title,
@@ -45,8 +68,8 @@ const AllVideosView: React.FC<{ onVideoSelect: (v: VideoItem) => void }> = ({ on
           } as VideoItem;
         });
         setVideos(formatted);
-      } catch (err: any) {
-        setError(err.message || "Failed to load videos");
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Failed to load videos");
       } finally {
         setLoading(false);
       }

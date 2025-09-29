@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useCreateSeminarMutation } from "@/redux/api/seminarApi";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "sonner";
 import SeminarManager from "../../../../../components/Dashboard/SeminarManage/SeminarManager";
 
 const initialState = {
@@ -49,100 +49,107 @@ const SeminarSchedule = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-8 p-4 sm:p-6 bg-white rounded-lg shadow-lg">
-      <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold mb-4 text-center text-blue-700">Seminar Schedule</h1>
-      <p className="text-gray-600 mb-6 text-center">
-        Here you can create and view upcoming seminars.
-      </p>
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
         <div>
-          <label className="block mb-1 font-semibold">Topic</label>
-          <input
-            type="text"
-            name="topic"
-            value={form.topic}
-            onChange={handleChange}
-            required
-            className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter seminar topic"
-          />
+          <h1 className="text-xl font-bold text-gray-900">Seminar Schedule</h1>
+          <p className="text-xs text-gray-600 mt-1">
+            Create and manage upcoming seminars
+          </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <label className="block mb-1 font-semibold">Place</label>
-            <select
-              name="place"
-              value={form.place}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="ONLINE">Online</option>
-              <option value="OFFLINE">Offline</option>
-            </select>
-          </div>
-          <div className="flex-1">
-            <label className="block mb-1 font-semibold">Date</label>
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Create New Seminar</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Topic</label>
             <input
-              type="date"
-              name="date"
-              value={form.date}
+              type="text"
+              name="topic"
+              value={form.topic}
               onChange={handleChange}
               required
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+              placeholder="Enter seminar topic"
             />
           </div>
-          <div className="flex-1">
-            <label className="block mb-1 font-semibold">Time</label>
-            <input
-              type="time"
-              name="time"
-              value={form.time}
-              onChange={handleChange}
-              required
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <label className="block mb-1 font-semibold">Type</label>
-            <select
-              name="type"
-              value={form.type}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="Free">Free</option>
-              <option value="Paid">Paid</option>
-            </select>
-          </div>
-          {form.type === "Paid" && (
-            <div className="flex-1">
-              <label className="block mb-1 font-semibold">Price</label>
-              <input
-                type="number"
-                name="price"
-                value={form.price}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Place</label>
+              <select
+                name="place"
+                value={form.place}
                 onChange={handleChange}
-                min={0}
-                required={form.type === "Paid"}
-                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Enter price"
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+              >
+                <option value="ONLINE">Online</option>
+                <option value="OFFLINE">Offline</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Date</label>
+              <input
+                type="date"
+                name="date"
+                value={form.date}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
               />
             </div>
-          )}
-        </div>
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition duration-200 disabled:opacity-60"
-        >
-          {isLoading ? "Creating..." : "Create Seminar"}
-        </button>
-      </form>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Time</label>
+              <input
+                type="time"
+                name="time"
+                value={form.time}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Type</label>
+              <select
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+              >
+                <option value="Free">Free</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+            {form.type === "Paid" && (
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Price</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={form.price}
+                  onChange={handleChange}
+                  min={0}
+                  required={form.type === "Paid"}
+                  className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  placeholder="Enter price"
+                />
+              </div>
+            )}
+          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-black text-white text-sm font-medium py-2 rounded hover:bg-gray-800 transition-colors disabled:opacity-60"
+          >
+            {isLoading ? "Creating..." : "Create Seminar"}
+          </button>
+        </form>
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-6">
         <SeminarManager />
       </div>
     </div>

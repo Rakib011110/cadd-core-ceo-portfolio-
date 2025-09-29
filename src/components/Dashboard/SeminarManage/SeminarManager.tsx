@@ -5,7 +5,7 @@ import {
   useUpdateSeminarMutation,
   useDeleteSeminarMutation,
 } from "@/redux/api/seminarApi";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "sonner";
 
 
 type Seminar = {
@@ -87,144 +87,182 @@ const SeminarManager = () => {
   };
 
   return (
-    <div className="mt-10">
-      <Toaster position="top-right" />
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-blue-700">Manage Seminars</h2>
+    <div className="mt-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900">Manage Seminars</h2>
+          <p className="text-xs text-gray-600 mt-1">
+            View and manage all scheduled seminars
+          </p>
+        </div>
         <a
           href="/dashboard/seminar-schedule"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold transition duration-200"
+          className="inline-flex items-center px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors"
         >
           + Create Seminar
         </a>
       </div>
-      <div className="overflow-x-auto rounded-lg shadow">
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr className="bg-blue-100 text-blue-800">
-              <th className="py-2 px-4">Topic</th>
-              <th className="py-2 px-4">Place</th>
-              <th className="py-2 px-4">Date</th>
-              <th className="py-2 px-4">Time</th>
-              <th className="py-2 px-4">Type</th>
-              <th className="py-2 px-4">Price</th>
-              <th className="py-2 px-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
+
+      <div className="bg-white border border-gray-200 rounded">
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-separate border-spacing-0">
+            <thead className="bg-gray-900 text-white">
               <tr>
-                <td colSpan={7} className="text-center py-6 text-gray-500">Loading...</td>
+                <th className="py-2 px-3 text-left text-xs font-medium">Topic</th>
+                <th className="py-2 px-3 text-center text-xs font-medium">Place</th>
+                <th className="py-2 px-3 text-center text-xs font-medium">Date</th>
+                <th className="py-2 px-3 text-center text-xs font-medium">Time</th>
+                <th className="py-2 px-3 text-center text-xs font-medium">Type</th>
+                <th className="py-2 px-3 text-center text-xs font-medium">Price</th>
+                <th className="py-2 px-3 text-center text-xs font-medium">Actions</th>
               </tr>
-            ) : data && data.data && data.data.length > 0 ? (
-              data.data.map((seminar: Seminar) => (
-                <tr key={seminar._id} className="border-b hover:bg-blue-50">
-                  <td className="py-2 px-4">{seminar.topic}</td>
-                  <td className="py-2 px-4">{seminar.place}</td>
-                  <td className="py-2 px-4">{seminar.date}</td>
-                  <td className="py-2 px-4">{seminar.time}</td>
-                  <td className="py-2 px-4">{seminar.type}</td>
-                  <td className="py-2 px-4">{seminar.type === "Paid" ? `৳${seminar.price}` : "Free"}</td>
-                  <td className="py-2 px-4 flex gap-2">
-                    <button
-                      onClick={() => handleEdit(seminar)}
-                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded font-semibold"
-                    >
-                      Update
-                    </button>
-                    <button
-                      onClick={() => handleDelete(seminar._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded font-semibold"
-                    >
-                      Delete
-                    </button>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={7} className="py-8 px-3 text-center text-xs text-gray-500">
+                    Loading seminars...
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={7} className="text-center py-6 text-gray-500">No seminars found.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ) : data && data.data && data.data.length > 0 ? (
+                data.data.map((seminar: Seminar) => (
+                  <tr
+                    key={seminar._id}
+                    className="border-b border-gray-100 transition-all hover:bg-gray-50"
+                  >
+                    <td className="py-2 px-3">
+                      <span className="text-sm font-medium text-gray-900">{seminar.topic}</span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <span className="text-xs text-gray-700">{seminar.place}</span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <span className="text-xs text-gray-700">{seminar.date}</span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <span className="text-xs text-gray-700">{seminar.time}</span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <span className={`px-2 py-1 text-xs rounded ${
+                        seminar.type === "Free"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}>
+                        {seminar.type}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <span className="text-xs text-gray-700">
+                        {seminar.type === "Paid" ? `৳${seminar.price}` : "Free"}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <div className="flex gap-2 justify-center">
+                        <button
+                          onClick={() => handleEdit(seminar)}
+                          className="px-3 py-1 bg-gray-600 text-white text-xs font-medium rounded hover:bg-gray-700 transition-colors"
+                        >
+                          Update
+                        </button>
+                        <button
+                          onClick={() => handleDelete(seminar._id)}
+                          className="px-3 py-1 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="py-8 px-3 text-center text-xs text-gray-500">
+                    No seminars found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Update Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg relative">
-            <button
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl"
-              onClick={() => setShowModal(false)}
-            >
-              &times;
-            </button>
-            <h3 className="text-xl font-bold mb-4 text-blue-700">Update Seminar</h3>
-            <form onSubmit={handleUpdate} className="space-y-5">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-900">Update Seminar</h3>
+              <button
+                className="text-gray-400 hover:text-gray-600 text-xl"
+                onClick={() => setShowModal(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <form onSubmit={handleUpdate} className="p-4 space-y-4">
               <div>
-                <label className="block mb-1 font-semibold">Topic</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Topic</label>
                 <input
                   type="text"
                   name="topic"
                   value={editForm?.topic ?? ""}
                   onChange={handleEditChange}
                   required
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                 />
               </div>
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <label className="block mb-1 font-semibold">Place</label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Place</label>
                   <select
                     name="place"
                     value={editForm?.place ?? ""}
                     onChange={handleEditChange}
-                    className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   >
                     <option value="ONLINE">Online</option>
                     <option value="OFFLINE">Offline</option>
                   </select>
                 </div>
-                <div className="flex-1">
-                  <label className="block mb-1 font-semibold">Date</label>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Date</label>
                   <input
                     type="date"
                     name="date"
                     value={editForm?.date ?? ""}
                     onChange={handleEditChange}
                     required
-                    className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   />
                 </div>
-                <div className="flex-1">
-                  <label className="block mb-1 font-semibold">Time</label>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Time</label>
                   <input
                     type="time"
                     name="time"
                     value={editForm?.time ?? ""}
                     onChange={handleEditChange}
                     required
-                    className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   />
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <label className="block mb-1 font-semibold">Type</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Type</label>
                   <select
                     name="type"
                     value={editForm?.type ?? ""}
                     onChange={handleEditChange}
-                    className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                   >
                     <option value="Free">Free</option>
                     <option value="Paid">Paid</option>
                   </select>
                 </div>
                 {editForm && editForm.type === "Paid" && (
-                  <div className="flex-1">
-                    <label className="block mb-1 font-semibold">Price</label>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Price</label>
                     <input
                       type="number"
                       name="price"
@@ -232,17 +270,26 @@ const SeminarManager = () => {
                       onChange={handleEditChange}
                       min={0}
                       required={editForm.type === "Paid"}
-                      className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
                     />
                   </div>
                 )}
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition duration-200"
-              >
-                Update Seminar
-              </button>
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors"
+                >
+                  Update Seminar
+                </button>
+              </div>
             </form>
           </div>
         </div>

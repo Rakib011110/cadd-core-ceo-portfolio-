@@ -4,17 +4,7 @@
 import { useCreateBlogMutation } from "@/redux/api/blogApi";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { 
-  FileText, 
-  Image as ImageIcon, 
-  Tag, 
-  Eye, 
-  Sparkles,
-  CheckCircle2,
-  AlertCircle,
-  Camera,
-  Play
-} from "lucide-react";
+
 
 // Utility function to generate slug from title
 const slugify = (text: string): string =>
@@ -236,36 +226,28 @@ const NewBlogPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-white dark:bg-black p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl mb-4 shadow-lg">
-            <FileText className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="text-center mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-black dark:text-white mb-2">
             Create New Blog Post
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+          <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto">
             Share your expertise and insights with your audience
           </p>
         </div>
 
         {/* Main Form Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="p-6 sm:p-8">
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Title Section */}
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                    <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h2>
-                </div>
+              <div className="space-y-3">
+                <h2 className="text-base font-semibold text-black dark:text-white">Basic Information</h2>
                 
                 <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Blog Title <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -274,29 +256,24 @@ const NewBlogPage = () => {
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100"
+                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all duration-200 text-gray-900 dark:text-gray-100 text-sm"
                     placeholder="Enter an engaging title for your blog post"
                     required
                   />
                   {formData.slug && (
-                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      URL: <span className="font-mono text-blue-600 dark:text-blue-400">/{formData.slug}</span>
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      URL: <span className="font-mono text-black dark:text-white">/{formData.slug}</span>
                     </p>
                   )}
                 </div>
               </div>
 
               {/* Category Section */}
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                    <Tag className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Category</h2>
-                </div>
+              <div className="space-y-3">
+                <h2 className="text-base font-semibold text-black dark:text-white">Category</h2>
                 
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Select Category <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -304,7 +281,7 @@ const NewBlogPage = () => {
                     name="category"
                     value={showCustomCategory ? "others" : formData.category}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100"
+                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all duration-200 text-gray-900 dark:text-gray-100 text-sm"
                     required={!showCustomCategory}
                   >
                     <option value="">Choose a category</option>
@@ -313,19 +290,19 @@ const NewBlogPage = () => {
                         {category}
                       </option>
                     ))}
-                    <option value="others">✨ Custom Category</option>
+                    <option value="others">Custom Category</option>
                   </select>
                   
                   {/* Custom Category Input with Animation */}
                   {showCustomCategory && (
-                    <div className="mt-4 transform transition-all duration-300 ease-in-out">
+                    <div className="mt-3">
                       <input
                         type="text"
                         id="customCategory"
                         name="customCategory"
                         value={formData.customCategory}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-300 dark:border-purple-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100"
+                        className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all duration-200 text-gray-900 dark:text-gray-100 text-sm"
                         placeholder="Enter your custom category"
                         required
                       />
@@ -335,16 +312,11 @@ const NewBlogPage = () => {
               </div> 
 
               {/* Content Section */}
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                    <FileText className="w-4 h-4 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Content</h2>
-                </div>
+              <div className="space-y-3">
+                <h2 className="text-base font-semibold text-black dark:text-white">Content</h2>
                 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Blog Content <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -352,12 +324,12 @@ const NewBlogPage = () => {
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100 resize-none"
+                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all duration-200 text-gray-900 dark:text-gray-100 resize-none text-sm"
                     placeholder="Write your blog content here..."
                     rows={6}
                     required
                   />
-                  <div className="flex justify-between items-center mt-2">
+                  <div className="flex justify-between items-center mt-1">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       This will be the main content of your blog post
                     </p>
@@ -369,18 +341,13 @@ const NewBlogPage = () => {
               </div>
 
               {/* Media Section */}
-              <div className="space-y-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                    <ImageIcon className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-                  </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Media</h2>
-                </div>
+              <div className="space-y-4">
+                <h2 className="text-base font-semibold text-black dark:text-white">Media</h2>
 
                 {/* Image Upload */}
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="imageUpload" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="imageUpload" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Featured Image <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
@@ -395,19 +362,18 @@ const NewBlogPage = () => {
                       />
                       <label
                         htmlFor="imageUpload"
-                        className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 ${
+                        className={`flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 ${
                           isUploading ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                       >
                         {isUploading ? (
                           <div className="flex flex-col items-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                            <p className="mt-2 text-sm text-blue-600 dark:text-blue-400">Uploading...</p>
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black"></div>
+                            <p className="mt-1 text-xs text-black dark:text-white">Uploading...</p>
                           </div>
                         ) : (
                           <div className="flex flex-col items-center">
-                            <Camera className="w-8 h-8 text-gray-400 mb-2" />
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload image</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Click to upload image</p>
                             <p className="text-xs text-gray-500 dark:text-gray-500">PNG, JPG up to 10MB</p>
                           </div>
                         )}
@@ -416,50 +382,41 @@ const NewBlogPage = () => {
 
                     {/* Image Preview */}
                     {imagePreviews.length > 0 && (
-                      <div className="mt-4 grid grid-cols-2 gap-2">
+                      <div className="mt-3 grid grid-cols-2 gap-2">
                         {imagePreviews.slice(0, 4).map((src, index) => (
-                          <div key={index} className="relative aspect-video rounded-lg overflow-hidden shadow-md group">
+                          <div key={index} className="relative aspect-video rounded-md overflow-hidden shadow-sm">
                             <img
                               src={src}
                               alt={`Preview ${index + 1}`}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-200">
-                              <Eye className="w-4 h-4 text-white opacity-0 group-hover:opacity-100" />
-                            </div>
                           </div>
                         ))}
                       </div>
                     )}
 
                     {formData.image && !isUploading && (
-                      <div className="mt-3 flex items-center space-x-2 text-green-600 dark:text-green-400">
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span className="text-sm">Image uploaded successfully</span>
+                      <div className="mt-2 flex items-center space-x-1 text-green-600 dark:text-green-400">
+                        <span className="text-xs">Image uploaded successfully</span>
                       </div>
                     )}
                   </div>
 
                   {/* Video URL */}
                   <div>
-                    <label htmlFor="video" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="video" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Video URL (Optional)
                     </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Play className="h-4 w-4 text-gray-400" />
-                      </div>
-                      <input
-                        type="url"
-                        id="video"
-                        name="video"
-                        value={formData.video}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 dark:text-gray-100"
-                        placeholder="https://youtube.com/watch?v=..."
-                      />
-                    </div>
-                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                    <input
+                      type="url"
+                      id="video"
+                      name="video"
+                      value={formData.video}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all duration-200 text-gray-900 dark:text-gray-100 text-sm"
+                      placeholder="https://youtube.com/watch?v=..."
+                    />
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                       Supports YouTube, Vimeo, and direct video links
                     </p>
                   </div>
@@ -467,34 +424,31 @@ const NewBlogPage = () => {
               </div>
 
               {/* Submit Section */}
-              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex flex-col sm:flex-row gap-4">
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     type="button"
-                    className="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium"
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium text-sm"
                   >
                     Save Draft
                   </button>
                   <button
                     type="submit"
                     disabled={isCreatingBlog || isUploading}
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    className="flex-1 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-1 dark:focus:ring-offset-gray-900 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm"
                   >
                     {isCreatingBlog ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b border-white"></div>
                         <span>Publishing...</span>
                       </>
                     ) : isUploading ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b border-white"></div>
                         <span>Uploading...</span>
                       </>
                     ) : (
-                      <>
-                        <Sparkles className="w-4 h-4" />
-                        <span>Publish Blog</span>
-                      </>
+                      <span>Publish Blog</span>
                     )}
                   </button>
                 </div>
@@ -504,16 +458,13 @@ const NewBlogPage = () => {
         </div>
 
         {/* Tips Section */}
-        <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+        <div className="mt-6 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md p-4">
           <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0">
-              <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
-            </div>
             <div>
-              <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
+              <h3 className="text-sm font-medium text-black dark:text-white mb-2">
                 Tips for a Great Blog Post
               </h3>
-              <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+              <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
                 <li>• Use a clear, engaging title that describes your content</li>
                 <li>• Choose the most relevant category for better discoverability</li>
                 <li>• Include high-quality images to make your post visually appealing</li>

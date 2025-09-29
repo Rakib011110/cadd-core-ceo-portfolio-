@@ -21,6 +21,7 @@ import {
   Shield,
   Sun,
   Moon,
+  User2,
 } from "lucide-react";
 
 const navigationSections = [
@@ -60,7 +61,13 @@ const navigationSections = [
         label: "Add New Badge",
         icon: Shield,
       },
-      { href: "/dashboard/my-work", label: "My Work", icon: Briefcase },
+      
+      { href: "/dashboard/my-work", label: "My Work", icon: Briefcase }, 
+      {
+        href: "/dashboard/manage-all-users",
+        label: "Manage All Users",
+        icon: User2,
+      },
     ],
   },
   {
@@ -76,13 +83,13 @@ const navigationSections = [
         label: "Manage Videos",
         icon: Video,
       },
+      
     ],
   },
   {
     title: "Settings",
     links: [
-      { href: "/dashboard/settings", label: "Settings", icon: Settings },
-      { href: "/dashboard/profile", label: "Profile", icon: User },
+      { href: "#", label: "Settings", icon: Settings },
     ],
   },
 ];

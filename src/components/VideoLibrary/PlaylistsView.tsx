@@ -8,7 +8,17 @@ import VideoCard from "./VideoCard";
 
 interface YouTubePlaylistItem {
   id: string;
-  snippet: any;
+  snippet: {
+    title: string;
+    publishedAt: string;
+    resourceId: {
+      videoId: string;
+    };
+    thumbnails: {
+      high?: { url: string };
+      medium?: { url: string };
+    };
+  };
 }
 
 interface YouTubeVideoDetail {
@@ -35,7 +45,7 @@ const PlaylistsView: React.FC<{ onVideoSelect: (v: VideoItem) => void }> = ({ on
       const data = await res.json();
       if (data.error) throw new Error(data.error.message);
       const videoIds = data.items.map((it: YouTubePlaylistItem) => it.snippet.resourceId.videoId).filter(Boolean);
-      let detailsMap = new Map<string, any>();
+      let detailsMap = new Map<string, YouTubeVideoDetail>();
       if (videoIds.length) {
         const detRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${videoIds.join(",")}&key=${API_KEY}`);
         const detJson = await detRes.json();
@@ -56,8 +66,8 @@ const PlaylistsView: React.FC<{ onVideoSelect: (v: VideoItem) => void }> = ({ on
       });
       setVideosByPlaylist((p) => ({ ...p, [plId]: videos }));
       setPages((p) => ({ ...p, [plId]: 1 }));
-    } catch (err: any) {
-      setError((e) => ({ ...e, [plId]: err.message || "Failed" }));
+    } catch (err: unknown) {
+      setError((e) => ({ ...e, [plId]: err instanceof Error ? err.message : "Failed" }));
     } finally {
       setLoading((s) => ({ ...s, [plId]: false }));
     }

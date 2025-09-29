@@ -26,15 +26,17 @@ const CourseTabs = () => {
 
           {/* Title + Subtitle */}
           <div className="px-8 py-4">
-            <h2 className="text-3xl sm:text-4xl uppercase font-bold text-gray-900 dark:text-white">
-              Most{" "}
+            <h2 className="text-3xl sm:text-3xl uppercase font-bold text-gray-900 dark:text-white">
+              Courses {" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
-                Popular
+              Offered 
               </span>{" "}
-              Courses
+             with  CADD CORE!
             </h2>
+
+            
             <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
-              Choose from hundreds of courses from specialist organizations
+              Access courses developed by specialist professionals
             </p>
           </div>
         </div>

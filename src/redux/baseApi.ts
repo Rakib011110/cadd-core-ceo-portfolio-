@@ -6,7 +6,7 @@ const baseApi = createApi({
     // baseUrl: "http://localhost:5000/api",
     baseUrl: "https://engrhachnayenahdmed-api.vercel.app/api",
   }),
-  tagTypes: ["Course", "Blog", "Seminar", "Video"],
+  tagTypes: ["Course", "Blog", "Seminar", "Video","User"],
   endpoints: () => ({}),
 });
 

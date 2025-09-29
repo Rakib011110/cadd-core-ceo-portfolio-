@@ -82,7 +82,7 @@ const Banner = () => {
                   2000,
                   "BIM & AutoCAD Trainer",
                   2000,
-                  "Structural Analysis Specialist",
+                  "Sr. Structural Engineer",
                   2000,
                 ]}
                 wrapper="span"
@@ -93,8 +93,7 @@ const Banner = () => {
             </h1>
 
             <p className="mt-4 text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Empowering students with professional BIM modeling, structural
-              analysis, AutoCAD, and design skills.
+             Empowering students/professionals with CAD, BIM, Structural Engineering and design skills.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2">
@@ -122,7 +121,8 @@ const Banner = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                Get certificate
+              Get Certified
+
               </span>
             </div>
 
