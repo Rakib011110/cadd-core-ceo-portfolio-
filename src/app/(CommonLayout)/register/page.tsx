@@ -49,6 +49,8 @@ function SignUpContent() {
       }
     }
 
+
+
     if (
       !isPending &&
       isError &&
@@ -137,7 +139,7 @@ function SignUpContent() {
                 </svg>
                 Registering...
               </span>
-            ) : "Register"}
+            ) : "Register"} 
           </Button>
         </div>
       </FormProvider>

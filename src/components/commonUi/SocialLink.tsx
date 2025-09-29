@@ -31,15 +31,15 @@ const SocialLinks = () => {
       ),
       href: "mailto:hachnayen@gmail.com",
     },
-    {
-      id: 4,
-      child: (
-        <>
-          WhatsApp <FaWhatsapp size={30} className="text-green-600" />
-        </>
-      ),
-      href: "https://wa.me/8801711486779",
-    },
+    // {
+    //   id: 4,
+    //   child: (
+    //     <>
+    //       WhatsApp <FaWhatsapp size={30} className="text-green-600" />
+    //     </>
+    //   ),
+    //   href: "https://wa.me/8801711486779",
+    // },
    
   ];
 

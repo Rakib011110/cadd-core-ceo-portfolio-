@@ -4,6 +4,8 @@
 import { useCreateBlogMutation } from "@/redux/api/blogApi";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
+import RichTextEditor from "@/components/ui/RichTextEditor";
+import RichTextRenderer from "@/components/ui/RichTextRenderer";
 
 
 // Utility function to generate slug from title
@@ -69,9 +71,10 @@ const NewBlogPage = () => {
   /**
    * Uploads a single file to Cloudinary.
    * @param file The File object to upload.
-   * @returns The secure URL of the uploaded image, or null if upload fails.
+   * @returns The secure URL of the uploaded image.
+   * @throws Error if upload fails
    */
-  const uploadToCloudinary = async (file: File): Promise<string | null> => {
+  const uploadToCloudinary = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "CADDCOREWEB"); // Ensure this preset is unsigned in Cloudinary
@@ -90,13 +93,15 @@ const NewBlogPage = () => {
         toast.success("Image uploaded successfully!");
         return data.secure_url;
       } else {
-        toast.error(`Image upload failed: ${data.error?.message || "Unknown error"}`);
-        return null;
+        const errorMessage = `Image upload failed: ${data.error?.message || "Unknown error"}`;
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
       }
     } catch (error: any) {
+      const errorMessage = error.message || "Image upload failed due to network or server error.";
       console.error("Cloudinary Upload Error:", error);
-      toast.error("Image upload failed due to network or server error.");
-      return null;
+      toast.error(errorMessage);
+      throw new Error(errorMessage);
     }
   };
 
@@ -114,27 +119,30 @@ const NewBlogPage = () => {
       const previews = Array.from(files).map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
 
-      // Upload files to Cloudinary
-      const uploadedImageUrls = await Promise.all(
-        Array.from(files).map((file) => uploadToCloudinary(file))
-      );
+      try {
+        // Upload files to Cloudinary
+        const uploadedImageUrls = await Promise.all(
+          Array.from(files).map((file) => uploadToCloudinary(file))
+        );
 
-      // Filter out any failed uploads (null values)
-      const validImages = uploadedImageUrls.filter((url) => url !== null) as string[];
-      setBlogImages(validImages); // Store all valid Cloudinary URLs
+        setBlogImages(uploadedImageUrls); // Store all valid Cloudinary URLs
 
-      if (validImages.length > 0) {
-        // Set the first uploaded image as the primary image for the blog post
-        setFormData((prev) => ({ ...prev, image: validImages[0] }));
-      } else {
-        setFormData((prev) => ({ ...prev, image: "" })); // Clear image if no valid uploads
+        if (uploadedImageUrls.length > 0) {
+          // Set the first uploaded image as the primary image for the blog post
+          setFormData((prev) => ({ ...prev, image: uploadedImageUrls[0] }));
+        } else {
+          setFormData((prev) => ({ ...prev, image: "" })); // Clear image if no valid uploads
+        }
+      } catch (error) {
+        console.error("Image upload failed:", error);
+        // Error handling is done in uploadToCloudinary function
+        setBlogImages([]);
+        setFormData((prev) => ({ ...prev, image: "" }));
+      } finally {
+        setIsUploading(false); // Set uploading state to false
+        // Clean up object URLs after they are no longer needed
+        previews.forEach(URL.revokeObjectURL);
       }
-
-      setIsUploading(false); // Set uploading state to false
-      // Clean up object URLs after they are no longer needed (e.g., after component unmount or new selection)
-      // Note: This is a simplified cleanup. For a more robust solution, you might want to
-      // manage these URLs in a state and revoke them in a useEffect cleanup.
-      previews.forEach(URL.revokeObjectURL);
     } else {
       setImagePreviews([]);
       setBlogImages([]);
@@ -319,22 +327,18 @@ const NewBlogPage = () => {
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Blog Content <span className="text-red-500">*</span>
                   </label>
-                  <textarea
-                    id="description"
-                    name="description"
+                  <RichTextEditor
                     value={formData.description}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all duration-200 text-gray-900 dark:text-gray-100 resize-none text-sm"
+                    onChange={(value) => setFormData((prev) => ({ ...prev, description: value }))}
                     placeholder="Write your blog content here..."
-                    rows={6}
-                    required
+                    onImageUpload={uploadToCloudinary}
                   />
                   <div className="flex justify-between items-center mt-1">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       This will be the main content of your blog post
                     </p>
                     <span className="text-xs text-gray-400 dark:text-gray-500">
-                      {formData.description.length} characters
+                      {formData.description.replace(/<[^>]*>/g, '').length} characters
                     </span>
                   </div>
                 </div>

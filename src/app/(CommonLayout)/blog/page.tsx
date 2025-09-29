@@ -1,4 +1,7 @@
 "use client";
+/* Lines 2-6 omitted */
+
+import RichTextRenderer from "@/components/ui/RichTextRenderer";
 
 import React, { useState, useMemo } from "react";
 import { Search, Filter,  BookOpen, Loader2 } from "lucide-react";
@@ -348,17 +351,23 @@ export default function BlogPage() {
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                           {post.title}
                         </h1>
-                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                          {isExpanded ? post.description : post.description?.slice(0, 300)}
-                          {post.description?.length > 300 && (
-                            <button
-                              onClick={() => setExpandedPostId(prev => prev === post._id ? null : post._id)}
-                              className="text-blue-600 dark:text-blue-400 font-semibold ml-2 hover:underline"
-                            >
-                              {isExpanded ? "Show Less" : "...Read More"}
-                            </button>
+                        <div className="prose prose-sm max-w-none text-slate-600 dark:text-slate-300 leading-relaxed">
+                          {isExpanded ? (
+                            <RichTextRenderer htmlString={post.description} />
+                          ) : (
+                            <div>
+                              <RichTextRenderer htmlString={post.description?.slice(0, 300) || ''} />
+                              {post.description?.length > 300 && (
+                                <button
+                                  onClick={() => setExpandedPostId(prev => prev === post._id ? null : post._id)}
+                                  className="text-blue-600 dark:text-blue-400 font-semibold ml-2 hover:underline"
+                                >
+                                  ...Read More
+                                </button>
+                              )}
+                            </div>
                           )}
-                        </p>
+                        </div>
                       </div>
                     </div>
                   );
