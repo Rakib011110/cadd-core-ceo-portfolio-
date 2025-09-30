@@ -42,6 +42,11 @@ const navigationSections = [
         badge: "New",
       },
       {
+        href: "/dashboard/workshops",
+        label: "Manage Workshops",
+        icon: FileText,
+      },
+      {
         href: "/dashboard/manage-blogs",
         label: "Manage Blogs",
         icon: FileText,
