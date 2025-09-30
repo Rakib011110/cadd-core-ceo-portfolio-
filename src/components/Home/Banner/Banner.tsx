@@ -84,6 +84,8 @@ const Banner = () => {
                   2000,
                   "Sr. Structural Engineer",
                   2000,
+                  "Rajuk & CDA Enlisted",
+                  2000,
                 ]}
                 wrapper="span"
                 speed={40}
