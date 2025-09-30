@@ -76,7 +76,7 @@ const Banner = () => {
                 sequence={[
                   "Founder & CEO - CADD CORE",
                   2000,
-                  "Senior Consultant - MAK Consultants",
+                  "Sr. Structural Engineer - MAK Consultants",
                   2000,
                   "10+ Years Teaching Experience",
                   2000,
