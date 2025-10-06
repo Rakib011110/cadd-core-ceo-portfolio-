@@ -196,7 +196,7 @@ const WorkshopCard: React.FC<{ workshop: Workshop }> = ({ workshop }) => {
         </div>
 
         {/* Availability */}
-        <div className="mb-5">
+        {/* <div className="mb-5">
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
             <span className="font-medium">Available Seats</span>
             <span className="font-semibold">{workshop.maxParticipants - workshop.currentParticipants} left</span>
@@ -213,7 +213,7 @@ const WorkshopCard: React.FC<{ workshop: Workshop }> = ({ workshop }) => {
             <span>{workshop.currentParticipants} enrolled</span>
             <span>{workshop.maxParticipants} total</span>
           </div>
-        </div>
+        </div> */}
 
         {/* CTA Button */}
         <button
