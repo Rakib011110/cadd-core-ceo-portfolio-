@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { TypeAnimation } from "react-type-animation";
 
@@ -76,14 +77,18 @@ const Banner = () => {
                 sequence={[
                    "Rajuk & CDA Enlisted",
                   2000,
-                  "Founder & CEO - CADD CORE",
+                 
+                  "Sr. Structural Engineer - MAK Consultants",
                   2000,
-                   "Sr. Structural Engineer",
+                   "Founder & CEO - CADD CORE",
+                  2000,
+ "BIM, CAD & Structural Design Trainer",
                   2000,
                   "10+ Years Teaching Experience",
                   2000,
-                  "BIM & AutoCAD Trainer",
-                  2000,
+                 
+  
+                 
                 ]}
                 wrapper="span"
                 speed={40}
@@ -130,6 +135,8 @@ const Banner = () => {
               <button className="px-8 py-3 bg-red-500 text-white font-semibold rounded-full shadow-lg hover:bg-red-600 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 w-full sm:w-auto">
                 Get Started
               </button>
+             <Link href="/videos">
+             
               <button className="px-8 py-3 bg-white border border-gray-300 text-gray-800 font-semibold rounded-full shadow-lg hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 w-full sm:w-auto flex items-center justify-center">
                 <svg
                   className="w-5 h-5 mr-2"
@@ -143,6 +150,7 @@ const Banner = () => {
                 </svg>
                 Watch Video
               </button>
+             </Link>
             </div>
           </div>
 
@@ -183,7 +191,7 @@ const Banner = () => {
               />
             </div>
 
-            <div className="absolute  bottom-0 right-0 z-10 transform translate-x-1/3 -translate-y-1/8 backdrop-blur-md  text-white p-4 rounded-2xl shadow-xl flex flex-col items-center justify-center  -rotate-3 hover:rotate-0 transition duration-300 text-sm md:text-base floating-element-3">
+            {/* <div className="absolute  bottom-0 right-0 z-10 transform translate-x-1/3 -translate-y-1/8 backdrop-blur-md  text-white p-4 rounded-2xl shadow-xl flex flex-col items-center justify-center  -rotate-3 hover:rotate-0 transition duration-300 text-sm md:text-base floating-element-3">
               <p className="font-semibold mb-2">Our daily new students</p>
               <div className="flex -space-x-2 overflow-hidden">
                 <img
@@ -205,7 +213,7 @@ const Banner = () => {
                   +5K
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-100 dark:bg-yellow-800 p-3 rounded-full shadow-xl flex items-center justify-center floating-element-2">
               <svg
