@@ -8,6 +8,7 @@ import CoursesSection from "./CoursesSection/CoursesSection";
 import FeturedAndSeminar from "./FeturedAndSeminar/FeturedAndSeminar";
 import TechnologySection from "./SoftwarKnows/SoftwarKnows";
 import StateSection from "./StateSection/StateSection";
+import Workshop from "./Workshop/Workshop";
 import PlaylistAccordion from "./YTPlayelistClass/YoutubePlaylist";
 
 const Home = () => {
@@ -19,10 +20,12 @@ const Home = () => {
         <CoursesSection />
       </div>
 
+
       <div className="mb-10 mt-10">
         <FeturedAndSeminar />
       </div>  
       
+<Workshop/>
 
 
 

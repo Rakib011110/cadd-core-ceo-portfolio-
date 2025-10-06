@@ -74,17 +74,15 @@ const Banner = () => {
               <span className="block">Engr. Hachnayen Ahmed</span>
               <TypeAnimation
                 sequence={[
+                   "Rajuk & CDA Enlisted",
+                  2000,
                   "Founder & CEO - CADD CORE",
                   2000,
-                  "Sr. Structural Engineer - MAK Consultants",
+                   "Sr. Structural Engineer",
                   2000,
                   "10+ Years Teaching Experience",
                   2000,
                   "BIM & AutoCAD Trainer",
-                  2000,
-                  "Sr. Structural Engineer",
-                  2000,
-                  "Rajuk & CDA Enlisted",
                   2000,
                 ]}
                 wrapper="span"
