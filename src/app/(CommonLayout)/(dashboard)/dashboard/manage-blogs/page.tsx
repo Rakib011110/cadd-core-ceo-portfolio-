@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useGetBlogsQuery, useDeleteBlogMutation, useUpdateBlogMutation, useGetSingleBlogQuery } from "@/redux/api/blogApi";
 import { toast } from "sonner";
-import { FileText, Image as ImageIcon, Tag, Eye, CheckCircle2, AlertCircle, Camera, Play } from "lucide-react";
+import { Eye, CheckCircle2, Camera, Play } from "lucide-react";
 
 // Utility function to generate slug from title
 const slugify = (text: string): string =>
@@ -237,7 +237,7 @@ const ManageBlogsPage = () => {
     };
 
     // Remove customCategory from blogData
-    const { customCategory: _, ...finalBlogData } = blogData;
+    const { customCategory, ...finalBlogData } = blogData;
 
     try {
       await updateBlog({ id: editingBlogId, ...finalBlogData }).unwrap();

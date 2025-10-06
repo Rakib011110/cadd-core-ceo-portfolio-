@@ -5,7 +5,6 @@ import { useCreateBlogMutation } from "@/redux/api/blogApi";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import RichTextEditor from "@/components/ui/RichTextEditor";
-import RichTextRenderer from "@/components/ui/RichTextRenderer";
 
 
 // Utility function to generate slug from title
@@ -207,7 +206,7 @@ const NewBlogPage = () => {
     };
 
     // Remove customCategory from blogData as it's not needed in the final submission
-    const { customCategory: _, ...finalBlogData } = blogData;
+    const { customCategory, ...finalBlogData } = blogData;
 
     try {
       await createBlog(finalBlogData).unwrap();

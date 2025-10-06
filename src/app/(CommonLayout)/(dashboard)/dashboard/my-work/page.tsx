@@ -24,7 +24,7 @@ export default function MyWorkPage() {
           </h1>
 
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-md mx-auto leading-relaxed">
-            We're working hard to bring you an amazing new feature. Stay tuned for updates and exciting announcements!
+            We&apos;re working hard to bring you an amazing new feature. Stay tuned for updates and exciting announcements!
           </p>
 
           {/* Progress Indicator */}

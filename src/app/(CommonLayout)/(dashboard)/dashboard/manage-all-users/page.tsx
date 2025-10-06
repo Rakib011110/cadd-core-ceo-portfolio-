@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion"; // Importing Framer Motion for animations
 import { useDeleteusersMutation, useGetAllUsersQuery, useUpdateusersMutation } from "@/redux/api/userApi";
 
@@ -286,9 +287,11 @@ export default function ManageAllUsers() {
                   >
                     <td className="py-2 px-3">
                       {user.profilePhoto ? (
-                        <img
+                        <Image
                           src={user.profilePhoto}
                           alt={user.name}
+                          width={32}
+                          height={32}
                           className="w-8 h-8 rounded-full mx-auto"
                         />
                       ) : (

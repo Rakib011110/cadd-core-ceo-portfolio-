@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, Sparkles, Zap, Users, BookOpen, Award } from 'lucide-react';
+import { Sparkles, Users, BookOpen, Award } from 'lucide-react';
 
 export default function WorkshopsPage() {
   return (
@@ -24,7 +24,7 @@ export default function WorkshopsPage() {
           </h1>
 
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-md mx-auto leading-relaxed">
-            We're preparing an amazing collection of interactive workshops to enhance your skills. Get ready for hands-on learning experiences!
+            We&apos;re preparing an amazing collection of interactive workshops to enhance your skills. Get ready for hands-on learning experiences!
           </p>
 
           {/* Progress Indicator */}

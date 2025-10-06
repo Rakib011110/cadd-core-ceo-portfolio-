@@ -315,7 +315,7 @@ export default function Workshop() {
             </h3>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
               Join thousands of professionals who have transformed their careers through our expert-led workshops.
-              Don't miss out on the opportunity to learn from industry leaders.
+              Don&apos;t miss out on the opportunity to learn from industry leaders.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
              <Link href={"/workshops"}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import {
   Calendar,
@@ -334,13 +335,14 @@ const workshops: Workshop[] = [
 ];
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function WorkshopDetailsPage({ params }: PageProps) {
-  const workshop = workshops.find(w => w.slug === params.slug);
+export default async function WorkshopDetailsPage({ params }: PageProps) {
+  const resolvedParams = await params;
+  const workshop = workshops.find(w => w.slug === resolvedParams.slug);
 
   if (!workshop) {
     notFound();
@@ -470,7 +472,7 @@ export default function WorkshopDetailsPage({ params }: PageProps) {
             <div className="mt-8 flex justify-center">
               <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full">
                 <Star className="w-5 h-5 text-yellow-400 mr-2 animate-spin" style={{animationDuration: '3s'}} />
-                <span className="text-emerald-100 font-semibold">Limited Seats Available - Don't Miss Out!</span>
+                <span className="text-emerald-100 font-semibold">Limited Seats Available - Don&apos;t Miss Out!</span>
                 <Star className="w-5 h-5 text-yellow-400 ml-2 animate-spin" style={{animationDuration: '3s'}} />
               </div>
             </div>
@@ -506,7 +508,7 @@ export default function WorkshopDetailsPage({ params }: PageProps) {
                 <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center mr-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">What You'll Achieve</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">What You will Achieve</h2>
               </div>
               <div className="grid gap-4">
                 {workshop.learningObjectives?.map((objective, index) => (
@@ -614,9 +616,11 @@ export default function WorkshopDetailsPage({ params }: PageProps) {
             <div className="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800 dark:to-blue-900/30 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="text-center">
                 <div className="relative mb-6">
-                  <img
-                    src={workshop.instructorImage}
+                  <Image
+                    src={workshop.instructorImage || '/default-avatar.png'}
                     alt={workshop.instructor}
+                    width={112}
+                    height={112}
                     className="w-28 h-28 rounded-full mx-auto object-cover border-4 border-white dark:border-gray-700 shadow-lg"
                   />
                   <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
@@ -740,7 +744,7 @@ export default function WorkshopDetailsPage({ params }: PageProps) {
                 <div className="w-10 h-10 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl flex items-center justify-center mr-3">
                   <Zap className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Skills You'll Master</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Skills You will Master</h3>
               </div>
               <div className="flex flex-wrap gap-3">
                 {workshop.tags.map((tag, index) => (
@@ -784,7 +788,7 @@ export default function WorkshopDetailsPage({ params }: PageProps) {
           <div className="mb-8">
             <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full mb-6">
               <Star className="w-5 h-5 text-yellow-400 mr-2 animate-spin" />
-              <span className="text-emerald-100 font-semibold">Don't Miss This Opportunity!</span>
+              <span className="text-emerald-100 font-semibold">Don&apos;t Miss This Opportunity!</span>
               <Star className="w-5 h-5 text-yellow-400 ml-2 animate-spin" />
             </div>
           </div>

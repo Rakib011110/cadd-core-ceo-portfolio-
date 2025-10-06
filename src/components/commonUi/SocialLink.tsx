@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin, FaFacebook, FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin, FaFacebook } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 
 const SocialLinks = () => {
