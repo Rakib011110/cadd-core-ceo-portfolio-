@@ -3,10 +3,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "http://localhost:5000/api",
-    baseUrl: "https://engrhachnayenahdmed-api.vercel.app/api",
+    baseUrl: "http://localhost:5000/api",
+    // baseUrl: "https://engrhachnayenahdmed-api.vercel.app/api",
   }),
-  tagTypes: ["Course", "Blog", "Seminar", "Video","User"],
+  tagTypes: ["Course", "Blog", "Seminar", "Video", "User", "Workshop"],
   endpoints: () => ({}),
 });
 

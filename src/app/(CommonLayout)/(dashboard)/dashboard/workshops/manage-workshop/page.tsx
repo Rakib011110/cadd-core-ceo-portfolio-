@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { toast } from 'sonner';
-import Link from 'next/link';
 import Image from 'next/image';
 import {
   useGetWorkshopsQuery,
@@ -26,6 +25,7 @@ import {
   Award,
   Edit,
   Trash2,
+  Eye,
   Search
 } from 'lucide-react';
 
@@ -187,7 +187,7 @@ export default function ManageWorkshopsPage() {
     name: "curriculum",
   });
 
-  const handleEdit = (workshop: IWorkshop) => {
+  const handleEdit = (workshop: any) => {
     setEditingWorkshop(workshop);
     reset({
       title: workshop.title,
@@ -299,20 +299,13 @@ export default function ManageWorkshopsPage() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold uppercase text-gray-900 dark:text-white mb-2">
-            Manage Workshops
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            View, edit, and delete your workshops
-          </p>
-        </div>
-        <Link href="create">
-          <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
-            Create New Workshop
-          </button>
-        </Link>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Manage Workshops
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          View, edit, and delete your workshops
+        </p>
       </div>
 
       {/* Search Bar */}
@@ -330,7 +323,7 @@ export default function ManageWorkshopsPage() {
       </div>
 
       {/* Workshops Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl  border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-700">
@@ -699,11 +692,11 @@ export default function ManageWorkshopsPage() {
                       {watch('image') && (
                         <div className="relative">
                           <Image
-                            src={watch('image')!}
+                            src={watch('image') as string}
                             alt="Workshop"
-                            width={200}
-                            height={128}
                             className="w-full h-32 object-cover rounded-lg"
+                            width={400}
+                            height={128}
                           />
                         </div>
                       )}
@@ -727,11 +720,11 @@ export default function ManageWorkshopsPage() {
                       {watch('instructorImage') && (
                         <div className="relative">
                           <Image
-                            src={watch('instructorImage')!}
+                            src={watch('instructorImage') as string}
                             alt="Instructor"
-                            width={200}
-                            height={128}
                             className="w-full h-32 object-cover rounded-lg"
+                            width={400}
+                            height={128}
                           />
                         </div>
                       )}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, Users, MapPin, Star, ArrowRight, BookOpen, Filter, TrendingUp, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { useGetWorkshopsQuery } from '../../../redux/api/workshopApi';
 
 // Workshop data interface
 interface Workshop {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   date: string;
@@ -19,63 +20,8 @@ interface Workshop {
   category: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   tags: string[];
+  slug: string;
 }
-
-// Sample workshop data
-const workshops: Workshop[] = [
-  {
-    id: '1',
-    title: 'Advanced AutoCAD Techniques',
-    description: 'Master advanced AutoCAD features including 3D modeling, parametric design, and automation tools. Learn industry best practices for efficient drafting and design workflows.',
-    date: '2025-10-15',
-    time: '10:00 AM',
-    duration: '4 hours',
-    location: 'Online',
-    instructor: 'Dr. Sarah Johnson',
-    image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400&h=250&fit=crop&crop=center',
-    price: 99,
-    maxParticipants: 50,
-    currentParticipants: 23,
-    category: 'CAD Software',
-    level: 'Advanced',
-    tags: ['AutoCAD', '3D Modeling', 'Automation']
-  },
-  {
-    id: '2',
-    title: 'Revit Architecture Fundamentals',
-    description: 'Learn the basics of BIM modeling with Autodesk Revit. Cover building information modeling, parametric components, and collaborative design workflows.',
-    date: '2025-10-18',
-    time: '2:00 PM',
-    duration: '6 hours',
-    location: 'Physical Venue',
-    instructor: 'Prof. Michael Chen',
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=250&fit=crop&crop=center',
-    price: 149,
-    maxParticipants: 30,
-    currentParticipants: 18,
-    category: 'BIM Software',
-    level: 'Beginner',
-    tags: ['Revit', 'BIM', 'Architecture']
-  },
-  {
-    id: '3',
-    title: 'Structural Analysis with SAP2000',
-    description: 'Comprehensive workshop on structural analysis and design using SAP2000. Learn to model complex structures and perform various analysis types.',
-    date: '2025-10-22',
-    time: '9:00 AM',
-    duration: '8 hours',
-    location: 'Online',
-    instructor: 'Eng. David Rodriguez',
-    image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=400&h=250&fit=crop&crop=center',
-    price: 199,
-    maxParticipants: 25,
-    currentParticipants: 12,
-    category: 'Structural Engineering',
-    level: 'Intermediate',
-    tags: ['SAP2000', 'Structural Analysis', 'Engineering']
-  },
-  
-];
 
 const WorkshopCard: React.FC<{ workshop: Workshop }> = ({ workshop }) => {
   const formatDate = (dateString: string) => {
@@ -102,135 +48,118 @@ const WorkshopCard: React.FC<{ workshop: Workshop }> = ({ workshop }) => {
   const isFull = workshop.currentParticipants >= workshop.maxParticipants;
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800 transition-all duration-500 group hover:-translate-y-2">
-      {/* Image */}
-      <div className="relative overflow-hidden">
-        <img
-          src={workshop.image}
-          alt={workshop.title}
-          className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <Link href={`/workshops/${workshop.slug}`}>
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-xl overflow-hidden border border-gray-100 dark:border-gray-800 transition-all duration-300 group hover:-translate-y-1 cursor-pointer">
+        {/* Image */}
+        <div className="relative overflow-hidden">
+          <img
+            src={workshop.image}
+            alt={workshop?.title}
+            className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-        {/* Level Badge */}
-        <div className="absolute top-4 left-4">
-          <span className={`px-3 py-1.5 rounded-full text-xs font-semibold border backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 ${getLevelColor(workshop.level)}`}>
-            {workshop.level}
-          </span>
-        </div>
-
-        {/* Price Badge */}
-        <div className="absolute top-4 right-4">
-          <span className="px-3 py-1.5 rounded-full text-sm font-bold bg-black text-white shadow-lg">
-            ${workshop.price}
-          </span>
-        </div>
-
-        {/* Availability Status */}
-        {isAlmostFull && !isFull && (
-          <div className="absolute bottom-4 left-4">
-            <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-500 text-white">
-              Almost Full
+          {/* Level Badge */}
+          <div className="absolute top-3 left-3">
+            <span className={`px-2 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 ${getLevelColor(workshop.level)}`}>
+              {workshop?.level}
             </span>
           </div>
-        )}
 
-        {isFull && (
-          <div className="absolute bottom-4 left-4">
-            <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500 text-white">
-              Fully Booked
+          {/* Price Badge */}
+          <div className="absolute top-3 right-3">
+            <span className="px-2 py-1 rounded-full text-xs font-bold bg-black text-white shadow-lg">
+              ${workshop.price}
             </span>
           </div>
-        )}
-      </div>
 
-      {/* Content */}
-      <div className="p-6">
-        {/* Category */}
-        <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium rounded-full">
-            {workshop.category}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-          {workshop.title}
-        </h3>
-
-        {/* Description */}
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-5 line-clamp-3 leading-relaxed">
-          {workshop.description}
-        </p>
-
-        {/* Workshop Details */}
-        <div className="space-y-3 mb-5">
-          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <Calendar className="w-4 h-4 mr-3 text-blue-500 flex-shrink-0" />
-            <span className="font-medium">{formatDate(workshop.date)}</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <Clock className="w-4 h-4 mr-3 text-green-500 flex-shrink-0" />
-            <span>{workshop.time} • {workshop.duration}</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <MapPin className="w-4 h-4 mr-3 text-purple-500 flex-shrink-0" />
-            <span>{workshop.location}</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <Users className="w-4 h-4 mr-3 text-orange-500 flex-shrink-0" />
-            <span className="font-medium">{workshop.instructor}</span>
-          </div>
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-5">
-          {workshop.tags.map((tag, index) => (
-            <span
-              key={index}
-              className="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-lg border border-blue-200 dark:border-blue-800"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        {/* Availability */}
-        {/* <div className="mb-5">
-          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-            <span className="font-medium">Available Seats</span>
-            <span className="font-semibold">{workshop.maxParticipants - workshop.currentParticipants} left</span>
-          </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-500 ${
-                isFull ? 'bg-red-500' : isAlmostFull ? 'bg-orange-500' : 'bg-green-500'
-              }`}
-              style={{ width: `${availabilityPercentage}%` }}
-            ></div>
-          </div>
-          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-500 mt-1">
-            <span>{workshop.currentParticipants} enrolled</span>
-            <span>{workshop.maxParticipants} total</span>
-          </div>
-        </div> */}
-
-        {/* CTA Button */}
-        <button
-          disabled={isFull}
-          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center group ${
-            isFull
-              ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-              : 'bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-100 shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-          }`}
-        >
-          <span>{isFull ? 'Fully Booked' : 'Register Now'}</span>
-          {!isFull && (
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+          {/* Availability Status */}
+          {isAlmostFull && !isFull && (
+            <div className="absolute bottom-3 left-3">
+              <span className="px-2 py-1 rounded-full text-xs font-medium bg-orange-500 text-white">
+                Almost Full
+              </span>
+            </div>
           )}
-        </button>
+
+          {isFull && (
+            <div className="absolute bottom-3 left-3">
+              <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-500 text-white">
+                Fully Booked
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="p-4">
+          {/* Category */}
+          <div className="mb-2">
+            <span className="inline-block px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium rounded-full">
+              {workshop.category}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+            {workshop.title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
+            {workshop.description}
+          </p>
+
+          {/* Workshop Details */}
+          <div className="space-y-2 mb-4">
+            <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+              <Calendar className="w-3 h-3 mr-2 text-blue-500 flex-shrink-0" />
+              <span className="font-medium">{formatDate(workshop.date)}</span>
+            </div>
+            <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+              <Clock className="w-3 h-3 mr-2 text-green-500 flex-shrink-0" />
+              <span>{workshop.time} • {workshop.duration}</span>
+            </div>
+            <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+              <MapPin className="w-3 h-3 mr-2 text-purple-500 flex-shrink-0" />
+              <span>{workshop.location}</span>
+            </div>
+            <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+              <Users className="w-3 h-3 mr-2 text-orange-500 flex-shrink-0" />
+              <span className="font-medium">{workshop.instructor}</span>
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1 mb-4">
+            {workshop.tags.slice(0, 3).map((tag, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-md border border-blue-200 dark:border-blue-800"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <button
+            disabled={isFull}
+            className={`w-full py-2 px-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center group text-sm border-2 ${
+              isFull
+                ? 'border-gray-300 text-gray-400 cursor-not-allowed bg-gray-100 dark:bg-gray-800'
+                : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-black'
+            }`}
+            onClick={(e) => e.preventDefault()} // Prevent Link navigation when clicking button
+          >
+            <span>{isFull ? 'Fully Booked' : 'Register Now'}</span>
+            {!isFull && (
+              <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+            )}
+          </button>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -238,71 +167,90 @@ export default function Workshop() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedLevel, setSelectedLevel] = useState<string>('All');
 
-  const categories = ['All', ...new Set(workshops.map(w => w.category))];
+  // Fetch workshops data from API
+  const { data: workshopsData, isLoading, error } = useGetWorkshopsQuery({});
+
+  // Extract workshops array from API response
+  const workshops = workshopsData?.data || [];
+
+  const categories = ['All', ...new Set(workshops.map((w: Workshop) => w.category))];
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
-  const filteredWorkshops = workshops.filter(workshop => {
+  const filteredWorkshops = workshops.filter((workshop: Workshop) => {
     const categoryMatch = selectedCategory === 'All' || workshop.category === selectedCategory;
     const levelMatch = selectedLevel === 'All' || workshop.level === selectedLevel;
     return categoryMatch && levelMatch;
   });
 
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-300">Loading workshops...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    return (
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="text-red-600 mb-4">
+              <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Failed to load workshops</h3>
+            <p className="text-gray-600 dark:text-gray-300">Please try again later.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <section className="py-20 ">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium mb-6 border border-blue-200 dark:border-blue-800">
-            <BookOpen className="w-4 h-4 mr-2" />
-            Professional Workshops
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Master New Skills with
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-              {' '}Expert-Led Workshops
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Join our comprehensive workshops designed by industry experts. Learn cutting-edge technologies,
-            advance your career, and build real-world projects with hands-on guidance.
-          </p>
-        </div>
+      <div className="text-center mb-16">
+  <div className="relative inline-block">
+    <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+    <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+    <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-gray-300 dark:border-gray-600"></div>
+    <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-gray-300 dark:border-gray-600"></div>
+
+    <h1 className="px-8 py-4">
+      <p className="text-4xl font-bold text-gray-900 dark:text-white uppercase mb-2">
+        Featured{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+          Workshops
+        </span>
+      </p>
+      <p className="text-lg text-gray-500 dark:text-gray-400 flex items-center justify-center">
+        <span className="w-8 h-px bg-gray-300 dark:bg-gray-600 mr-3"></span>
+        Master new skills with expert-led training
+        <span className="w-8 h-px bg-gray-300 dark:bg-gray-600 ml-3"></span>
+      </p>
+    </h1>
+  </div>
+</div>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative">
-              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none cursor-pointer shadow-sm hover:shadow-md"
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="relative">
-              <TrendingUp className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <select
-                value={selectedLevel}
-                onChange={(e) => setSelectedLevel(e.target.value)}
-                className="pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none cursor-pointer shadow-sm hover:shadow-md"
-              >
-                {levels.map(level => (
-                  <option key={level} value={level}>{level}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          
         </div>
 
         {/* Workshops Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredWorkshops.map((workshop, index) => (
-            <WorkshopCard key={index} workshop={workshop} />
+          {filteredWorkshops.map((workshop: Workshop, index: number) => (
+            <WorkshopCard key={workshop._id} workshop={workshop} />
           ))}
         </div>
 

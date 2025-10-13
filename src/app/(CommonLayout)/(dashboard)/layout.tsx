@@ -125,12 +125,12 @@ const NavLink: React.FC<NavLinkProps> = ({
         className={`flex items-center justify-between p-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
           isActive
             ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105"
-            : "text-gray-300 hover:bg-gray-700/50 hover:text-white hover:transform hover:scale-102"
+            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-800 dark:hover:text-white hover:transform hover:scale-102"
         }`}
       >
         <div className="flex items-center relative z-10">
           <Icon className={`w-5 h-5 mr-3 transition-all duration-300 ${
-            isActive ? "text-white" : "text-gray-400 group-hover:text-white"
+            isActive ? "text-white" : "text-gray-500 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-white"
           }`} />
           <span className="font-medium text-sm">{label}</span>
         </div>
@@ -164,9 +164,9 @@ const CollapsibleNavSection: React.FC<CollapsibleNavSectionProps> = ({
     <div className="mb-6">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center text-left text-xs font-bold text-gray-400 uppercase tracking-wider p-3 hover:bg-gray-700/30 rounded-lg transition-all duration-300 group"
+        className="w-full flex justify-between items-center text-left text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider p-3 hover:bg-gray-100 dark:hover:bg-gray-700/30 rounded-lg transition-all duration-300 group"
       >
-        <span className="group-hover:text-gray-300">{title}</span>
+        <span className="group-hover:text-gray-800 dark:group-hover:text-gray-300">{title}</span>
         <div className="transition-transform duration-300">
           {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </div>
@@ -188,7 +188,6 @@ import { PropsWithChildren } from "react";
 
 export default function AdminLayout({ children }: PropsWithChildren<object>) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     // Close sidebar when clicking outside on mobile
@@ -245,15 +244,15 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
         {/* Sidebar */}
         <aside
           className={`
-            bg-gradient-to-b from-gray-900 to-gray-800 text-white w-80 
+            bg-white dark:bg-gray-800 w-80 
             fixed inset-y-0 left-0 transform lg:relative lg:translate-x-0
             transition-transform duration-300 ease-in-out z-50
             ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-            shadow-2xl border-r border-gray-700
+            shadow- border-r border-gray-200 dark:border-gray-700
           `}
         >
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-gray-700/50">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700/50">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                 <span className="text-xl font-bold">A</span>
@@ -279,17 +278,11 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-gray-700/50">
-            <div className="flex items-center justify-between">
-              <button className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700/50">
+            <div className="flex items-center justify-start">
+              <button className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors">
                 <LogOut className="w-4 h-4" />
                 <span className="text-sm">Logout</span>
-              </button>
-              <button 
-                className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
-                onClick={() => setDarkMode(!darkMode)}
-              >
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
             </div>
           </div>
@@ -303,7 +296,7 @@ export default function AdminLayout({ children }: PropsWithChildren<object>) {
           {/* Content Area */}
           <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
             <div className="max-w-7xl mx-auto">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8 min-h-[calc(100vh-12rem)]">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl  border border-gray-200 dark:border-gray-700 p-6 lg:p-8 min-h-[calc(100vh-12rem)]">
                 {children ? (
                   children
                 ) : (

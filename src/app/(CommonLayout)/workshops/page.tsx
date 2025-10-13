@@ -2,10 +2,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Calendar, Clock, Users, MapPin, Star, ArrowRight, BookOpen, Filter, TrendingUp, Mail } from 'lucide-react';
+import { useGetWorkshopsQuery } from '../../../redux/api/workshopApi';
 
-// Workshop data interface
-interface Workshop {
-  id: string;
+interface ICurriculum {
+  title: string;
+  description: string;
+  duration: string;
+}
+
+interface IWorkshop {
+  _id: string;
   title: string;
   description: string;
   date: string;
@@ -21,121 +27,16 @@ interface Workshop {
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   tags: string[];
   slug: string;
+  detailedDescription?: string;
+  learningObjectives?: string[];
+  prerequisites?: string[];
+  whatYouWillLearn?: string[];
+  instructorBio?: string;
+  instructorImage?: string;
+  curriculum?: ICurriculum[];
 }
 
-// Sample workshop data
-const workshops: Workshop[] = [
-  {
-    id: '1',
-    title: 'Advanced AutoCAD Techniques',
-    description: 'Master advanced AutoCAD features including 3D modeling, parametric design, and automation tools. Learn industry best practices for efficient drafting and design workflows.',
-    date: '2025-10-15',
-    time: '10:00 AM',
-    duration: '4 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400&h=250&fit=crop&crop=center',
-    price: 99,
-    maxParticipants: 50,
-    currentParticipants: 23,
-    category: 'CAD Software',
-    level: 'Advanced',
-    tags: ['AutoCAD', '3D Modeling', 'Automation'],
-    slug: 'advanced-autocad-techniques'
-  },
-  {
-    id: '2',
-    title: 'Revit Architecture Fundamentals',
-    description: 'Learn the basics of BIM modeling with Autodesk Revit. Cover building information modeling, parametric components, and collaborative design workflows.',
-    date: '2025-10-18',
-    time: '2:00 PM',
-    duration: '6 hours',
-    location: 'Physical Venue',
-    instructor: 'Engr. Hachnayen Ahmed',
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=250&fit=crop&crop=center',
-    price: 149,
-    maxParticipants: 30,
-    currentParticipants: 18,
-    category: 'BIM Software',
-    level: 'Beginner',
-    tags: ['Revit', 'BIM', 'Architecture'],
-    slug: 'revit-architecture-fundamentals'
-  },
-  {
-    id: '3',
-    title: 'Structural Analysis with SAP2000',
-    description: 'Comprehensive workshop on structural analysis and design using SAP2000. Learn to model complex structures and perform various analysis types.',
-    date: '2025-10-22',
-    time: '9:00 AM',
-    duration: '8 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=400&h=250&fit=crop&crop=center',
-    price: 199,
-    maxParticipants: 25,
-    currentParticipants: 12,
-    category: 'Structural Engineering',
-    level: 'Intermediate',
-    tags: ['SAP2000', 'Structural Analysis', 'Engineering'],
-    slug: 'structural-analysis-sap2000'
-  },
-  {
-    id: '4',
-    title: 'Civil Engineering Design Principles',
-    description: 'Explore fundamental principles of civil engineering design including site planning, infrastructure development, and sustainable construction practices.',
-    date: '2025-10-25',
-    time: '1:00 PM',
-    duration: '5 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=250&fit=crop&crop=center',
-    price: 129,
-    maxParticipants: 40,
-    currentParticipants: 15,
-    category: 'Civil Engineering',
-    level: 'Intermediate',
-    tags: ['Civil Engineering', 'Design', 'Infrastructure'],
-    slug: 'civil-engineering-design-principles'
-  },
-  {
-    id: '5',
-    title: '3D Printing for Engineers',
-    description: 'Discover the applications of 3D printing technology in engineering. Learn design for additive manufacturing, material selection, and prototyping techniques.',
-    date: '2025-10-28',
-    time: '11:00 AM',
-    duration: '6 hours',
-    location: 'Physical Venue',
-    instructor: 'Engr. Hachnayen Ahmed',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop&crop=center',
-    price: 179,
-    maxParticipants: 20,
-    currentParticipants: 8,
-    category: 'Manufacturing',
-    level: 'Advanced',
-    tags: ['3D Printing', 'Prototyping', 'Manufacturing'],
-    slug: '3d-printing-engineers'
-  },
-  {
-    id: '6',
-    title: 'Sustainable Design & Green Building',
-    description: 'Learn sustainable design principles and green building practices. Cover LEED certification, energy efficiency, and environmental impact assessment.',
-    date: '2025-11-01',
-    time: '10:00 AM',
-    duration: '7 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=250&fit=crop&crop=center',
-    price: 159,
-    maxParticipants: 35,
-    currentParticipants: 22,
-    category: 'Sustainable Design',
-    level: 'Intermediate',
-    tags: ['Sustainability', 'Green Building', 'LEED'],
-    slug: 'sustainable-design-green-building'
-  }
-];
-
-const WorkshopCard: React.FC<{ workshop: Workshop }> = ({ workshop }) => {
+const WorkshopCard: React.FC<{ workshop: IWorkshop }> = ({ workshop }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -244,7 +145,7 @@ const WorkshopCard: React.FC<{ workshop: Workshop }> = ({ workshop }) => {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-5">
-          {workshop.tags.map((tag, index) => (
+          {(workshop.tags || []).map((tag: string, index: number) => (
             <span
               key={index}
               className="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-lg border border-blue-200 dark:border-blue-800"
@@ -280,10 +181,15 @@ export default function Workshop() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedLevel, setSelectedLevel] = useState<string>('All');
 
-  const categories = ['All', ...new Set(workshops.map(w => w.category))];
+  // Fetch workshops data from API
+  const { data: workshopsData, isLoading, error } = useGetWorkshopsQuery({});
+
+  // Extract workshops array from API response
+  const workshops = workshopsData?.data || [];
+  const categories: string[] = ['All', ...(Array.from(new Set(workshops.map((w: IWorkshop) => w.category))) as string[])];
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
-  const filteredWorkshops = workshops.filter(workshop => {
+  const filteredWorkshops = workshops.filter((workshop: IWorkshop) => {
     const categoryMatch = selectedCategory === 'All' || workshop.category === selectedCategory;
     const levelMatch = selectedLevel === 'All' || workshop.level === selectedLevel;
     return categoryMatch && levelMatch;
@@ -291,9 +197,38 @@ export default function Workshop() {
 
   // Get upcoming workshops (next 3)
   const upcomingWorkshops = workshops
-    .filter(w => new Date(w.date) > new Date())
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .filter((w: IWorkshop) => new Date(w.date) > new Date())
+    .sort((a: IWorkshop, b: IWorkshop) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 3);
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <section className="relative min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300">Loading workshops...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    return (
+      <section className="relative min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-600 mb-4">
+            <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Failed to load workshops</h3>
+          <p className="text-gray-600 dark:text-gray-300">Please try again later.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative min-h-screen bg-white dark:bg-gray-900">
@@ -329,9 +264,9 @@ export default function Workshop() {
                   </div>
 
                   <div className="space-y-3">
-                    {upcomingWorkshops.map((workshop, index) => (
+                    {upcomingWorkshops.map((workshop: IWorkshop, index: number) => (
                       <div
-                        key={workshop.id}
+                        key={workshop._id}
                         className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/20 hover:border-white/30 transition-all duration-500 animate-fade-in-up shadow-2xl hover:shadow-white/10 hover:scale-105"
                         style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                       >
@@ -466,7 +401,7 @@ export default function Workshop() {
 
         {/* Workshops Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filteredWorkshops.map((workshop, index) => (
+          {filteredWorkshops.map((workshop: IWorkshop, index: number) => (
             <WorkshopCard key={index} workshop={workshop} />
           ))}
         </div>

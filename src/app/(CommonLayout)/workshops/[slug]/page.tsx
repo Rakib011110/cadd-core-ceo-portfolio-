@@ -1,7 +1,9 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import {
   Calendar,
   Clock,
@@ -22,10 +24,16 @@ import {
   Download,
   Share2
 } from 'lucide-react';
+import { useGetWorkshopBySlugQuery } from '../../../../redux/api/workshopApi';
 
-// Workshop data interface
-interface Workshop {
-  id: string;
+interface ICurriculum {
+  title: string;
+  description: string;
+  duration: string;
+}
+
+interface IWorkshop {
+  _id: string;
   title: string;
   description: string;
   date: string;
@@ -47,292 +55,8 @@ interface Workshop {
   whatYouWillLearn?: string[];
   instructorBio?: string;
   instructorImage?: string;
-  curriculum?: { title: string; description: string; duration: string }[];
+  curriculum?: ICurriculum[];
 }
-
-// Sample workshop data (same as main page)
-const workshops: Workshop[] = [
-  {
-    id: '1',
-    title: 'Advanced AutoCAD Techniques',
-    description: 'Master advanced AutoCAD features including 3D modeling, parametric design, and automation tools. Learn industry best practices for efficient drafting and design workflows.',
-    detailedDescription: 'This comprehensive workshop dives deep into advanced AutoCAD techniques that will transform your drafting capabilities. From complex 3D modeling to automated workflows, you\'ll learn how to leverage AutoCAD\'s most powerful features to increase productivity and design quality.',
-    date: '2025-10-15',
-    time: '10:00 AM',
-    duration: '4 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    instructorBio: 'Engr. Hachnayen Ahmed is a distinguished BIM & AutoCAD Trainer and Sr. Structural Engineer, enlisted with Rajuk & CDA. With extensive experience in structural engineering and advanced CAD technologies, he brings real-world expertise to help engineers master complex design workflows and industry-standard practices.',
-    instructorImage: 'https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png',
-    image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=400&fit=crop&crop=center',
-    price: 99,
-    maxParticipants: 50,
-    currentParticipants: 23,
-    category: 'CAD Software',
-    level: 'Advanced',
-    tags: ['AutoCAD', '3D Modeling', 'Automation'],
-    slug: 'advanced-autocad-techniques',
-    learningObjectives: [
-      'Master advanced 3D modeling techniques in AutoCAD',
-      'Implement parametric design workflows',
-      'Create automated drawing templates and scripts',
-      'Optimize performance for large-scale projects',
-      'Integrate AutoCAD with other design software'
-    ],
-    prerequisites: [
-      'Basic AutoCAD knowledge',
-      'Understanding of 2D drafting principles',
-      'Computer literacy'
-    ],
-    whatYouWillLearn: [
-      'Advanced 3D modeling and rendering',
-      'Parametric constraints and dynamic blocks',
-      'Custom script development',
-      'Performance optimization techniques',
-      'Industry best practices'
-    ],
-    curriculum: [
-      { title: 'Advanced 3D Modeling', description: 'Deep dive into 3D solids, surfaces, and mesh modeling', duration: '1.5 hours' },
-      { title: 'Parametric Design', description: 'Creating intelligent, constraint-based designs', duration: '1 hour' },
-      { title: 'Automation & Scripting', description: 'Custom commands and automation workflows', duration: '1 hour' },
-      { title: 'Performance Optimization', description: 'Working efficiently with large drawings', duration: '0.5 hours' }
-    ]
-  },
-  {
-    id: '2',
-    title: 'Revit Architecture Fundamentals',
-    description: 'Learn the basics of BIM modeling with Autodesk Revit. Cover building information modeling, parametric components, and collaborative design workflows.',
-    detailedDescription: 'Get started with Building Information Modeling (BIM) using Autodesk Revit. This workshop covers the fundamental concepts of parametric modeling, family creation, and collaborative design workflows essential for modern architectural practice.',
-    date: '2025-10-18',
-    time: '2:00 PM',
-    duration: '6 hours',
-    location: 'Physical Venue',
-    instructor: 'Engr. Hachnayen Ahmed',
-    instructorBio: 'Engr. Hachnayen Ahmed is a distinguished BIM & AutoCAD Trainer and Sr. Structural Engineer, enlisted with Rajuk & CDA. With extensive experience in structural engineering and advanced CAD technologies, he brings real-world expertise to help engineers master complex design workflows and industry-standard practices.',
-    instructorImage: 'https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png',
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&h=400&fit=crop&crop=center',
-    price: 149,
-    maxParticipants: 30,
-    currentParticipants: 18,
-    category: 'BIM Software',
-    level: 'Beginner',
-    tags: ['Revit', 'BIM', 'Architecture'],
-    slug: 'revit-architecture-fundamentals',
-    learningObjectives: [
-      'Understand BIM concepts and workflows',
-      'Create parametric architectural models',
-      'Develop custom families and components',
-      'Generate construction documentation',
-      'Collaborate effectively in team environments'
-    ],
-    prerequisites: [
-      'Basic computer skills',
-      'Understanding of architectural principles',
-      'No prior Revit experience required'
-    ],
-    whatYouWillLearn: [
-      'BIM fundamentals and concepts',
-      'Basic modeling techniques',
-      'Family creation and management',
-      'Documentation and annotation',
-      'Basic collaboration tools'
-    ],
-    curriculum: [
-      { title: 'BIM Concepts & Interface', description: 'Introduction to BIM and Revit interface', duration: '1 hour' },
-      { title: 'Basic Modeling', description: 'Creating walls, floors, and basic elements', duration: '2 hours' },
-      { title: 'Families & Components', description: 'Creating and managing parametric families', duration: '1.5 hours' },
-      { title: 'Documentation', description: 'Creating plans, sections, and elevations', duration: '1 hour' },
-      { title: 'Collaboration Basics', description: 'Working with linked models and worksets', duration: '0.5 hours' }
-    ]
-  },
-  {
-    id: '3',
-    title: 'Structural Analysis with SAP2000',
-    description: 'Comprehensive workshop on structural analysis and design using SAP2000. Learn to model complex structures and perform various analysis types.',
-    detailedDescription: 'Master the art of structural analysis using SAP2000, one of the most powerful structural engineering software packages. Learn to model, analyze, and design various structural systems including buildings, bridges, and industrial structures.',
-    date: '2025-10-22',
-    time: '9:00 AM',
-    duration: '8 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    instructorBio: 'Engr. Hachnayen Ahmed is a distinguished BIM & AutoCAD Trainer and Sr. Structural Engineer, enlisted with Rajuk & CDA. With extensive experience in structural engineering and advanced CAD technologies, he brings real-world expertise to help engineers master complex design workflows and industry-standard practices.',
-    instructorImage: 'https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png',
-    image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=800&h=400&fit=crop&crop=center',
-    price: 199,
-    maxParticipants: 25,
-    currentParticipants: 12,
-    category: 'Structural Engineering',
-    level: 'Intermediate',
-    tags: ['SAP2000', 'Structural Analysis', 'Engineering'],
-    slug: 'structural-analysis-sap2000',
-    learningObjectives: [
-      'Master SAP2000 interface and modeling techniques',
-      'Perform static and dynamic analysis',
-      'Design steel and concrete structures',
-      'Interpret analysis results and design checks',
-      'Generate comprehensive structural reports'
-    ],
-    prerequisites: [
-      'Basic structural engineering knowledge',
-      'Understanding of structural mechanics',
-      'Familiarity with Windows OS'
-    ],
-    whatYouWillLearn: [
-      'SAP2000 interface and navigation',
-      '3D structural modeling',
-      'Load application and analysis',
-      'Design code implementation',
-      'Result interpretation and reporting'
-    ],
-    curriculum: [
-      { title: 'SAP2000 Interface & Basics', description: 'Getting familiar with the software interface', duration: '1 hour' },
-      { title: '3D Structural Modeling', description: 'Creating complex structural models', duration: '2.5 hours' },
-      { title: 'Load Cases & Analysis', description: 'Applying loads and running analyses', duration: '2 hours' },
-      { title: 'Design & Code Checks', description: 'Steel and concrete design implementation', duration: '2 hours' },
-      { title: 'Results & Reporting', description: 'Interpreting results and generating reports', duration: '0.5 hours' }
-    ]
-  },
-  {
-    id: '4',
-    title: 'Civil Engineering Design Principles',
-    description: 'Explore fundamental principles of civil engineering design including site planning, infrastructure development, and sustainable construction practices.',
-    detailedDescription: 'This workshop provides a comprehensive overview of civil engineering design principles, covering everything from site planning and infrastructure design to sustainable construction practices and project management.',
-    date: '2025-10-25',
-    time: '1:00 PM',
-    duration: '5 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    instructorBio: 'Engr. Hachnayen Ahmed is a distinguished BIM & AutoCAD Trainer and Sr. Structural Engineer, enlisted with Rajuk & CDA. With extensive experience in structural engineering and advanced CAD technologies, he brings real-world expertise to help engineers master complex design workflows and industry-standard practices.',
-    instructorImage: 'https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png',
-    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=250&fit=crop&crop=center',
-    price: 129,
-    maxParticipants: 40,
-    currentParticipants: 15,
-    category: 'Civil Engineering',
-    level: 'Intermediate',
-    tags: ['Civil Engineering', 'Design', 'Infrastructure'],
-    slug: 'civil-engineering-design-principles',
-    learningObjectives: [
-      'Understand civil engineering design processes',
-      'Apply sustainable design principles',
-      'Design basic infrastructure systems',
-      'Implement project management best practices',
-      'Evaluate environmental impact assessments'
-    ],
-    prerequisites: [
-      'Basic engineering knowledge',
-      'Understanding of physics and mathematics',
-      'Interest in civil engineering applications'
-    ],
-    whatYouWillLearn: [
-      'Site planning and development',
-      'Infrastructure design principles',
-      'Sustainable construction practices',
-      'Environmental impact assessment',
-      'Project management fundamentals'
-    ],
-    curriculum: [
-      { title: 'Site Planning & Development', description: 'Principles of site analysis and planning', duration: '1.5 hours' },
-      { title: 'Infrastructure Systems', description: 'Design of roads, utilities, and drainage', duration: '1.5 hours' },
-      { title: 'Sustainable Design', description: 'Green building and environmental considerations', duration: '1 hour' },
-      { title: 'Project Management', description: 'Planning, scheduling, and cost control', duration: '1 hour' }
-    ]
-  },
-  {
-    id: '5',
-    title: '3D Printing for Engineers',
-    description: 'Discover the applications of 3D printing technology in engineering. Learn design for additive manufacturing, material selection, and prototyping techniques.',
-    detailedDescription: 'Explore the revolutionary world of 3D printing and its applications in engineering. Learn how to design for additive manufacturing, select appropriate materials, and implement prototyping workflows that can transform your engineering processes.',
-    date: '2025-10-28',
-    time: '11:00 AM',
-    duration: '6 hours',
-    location: 'Physical Venue',
-    instructor: 'Engr. Hachnayen Ahmed',
-    instructorBio: 'Engr. Hachnayen Ahmed is a distinguished BIM & AutoCAD Trainer and Sr. Structural Engineer, enlisted with Rajuk & CDA. With extensive experience in structural engineering and advanced CAD technologies, he brings real-world expertise to help engineers master complex design workflows and industry-standard practices.',
-    instructorImage: 'https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=400&fit=crop&crop=center',
-    price: 179,
-    maxParticipants: 20,
-    currentParticipants: 8,
-    category: 'Manufacturing',
-    level: 'Advanced',
-    tags: ['3D Printing', 'Prototyping', 'Manufacturing'],
-    slug: '3d-printing-engineers',
-    learningObjectives: [
-      'Understand 3D printing technologies and processes',
-      'Design parts optimized for additive manufacturing',
-      'Select appropriate materials and printing parameters',
-      'Implement quality control and post-processing',
-      'Integrate 3D printing into engineering workflows'
-    ],
-    prerequisites: [
-      'Basic CAD knowledge',
-      'Understanding of manufacturing processes',
-      'Engineering background preferred'
-    ],
-    whatYouWillLearn: [
-      '3D printing technologies overview',
-      'Design for additive manufacturing (DfAM)',
-      'Material selection and properties',
-      'Print parameter optimization',
-      'Quality control and finishing'
-    ],
-    curriculum: [
-      { title: '3D Printing Technologies', description: 'Overview of different printing methods and materials', duration: '1.5 hours' },
-      { title: 'Design for 3D Printing', description: 'Optimizing designs for additive manufacturing', duration: '1.5 hours' },
-      { title: 'Material Science', description: 'Understanding material properties and selection', duration: '1 hour' },
-      { title: 'Print Setup & Operation', description: 'Software setup, slicing, and machine operation', duration: '1.5 hours' },
-      { title: 'Post-Processing & Quality', description: 'Finishing techniques and quality control', duration: '0.5 hours' }
-    ]
-  },
-  {
-    id: '6',
-    title: 'Sustainable Design & Green Building',
-    description: 'Learn sustainable design principles and green building practices. Cover LEED certification, energy efficiency, and environmental impact assessment.',
-    detailedDescription: 'Dive into the world of sustainable design and green building practices. Learn about LEED certification requirements, energy-efficient design strategies, and comprehensive environmental impact assessment techniques.',
-    date: '2025-11-01',
-    time: '10:00 AM',
-    duration: '7 hours',
-    location: 'Online',
-    instructor: 'Engr. Hachnayen Ahmed',
-    instructorBio: 'Engr. Hachnayen Ahmed is a distinguished BIM & AutoCAD Trainer and Sr. Structural Engineer, enlisted with Rajuk & CDA. With extensive experience in structural engineering and advanced CAD technologies, he brings real-world expertise to help engineers master complex design workflows and industry-standard practices.',
-    instructorImage: 'https://res.cloudinary.com/dalpf8iip/image/upload/v1751277732/Engr._Hachnayen_Ahmed-removebg-preview_cufiya.png',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=400&fit=crop&crop=center',
-    price: 159,
-    maxParticipants: 35,
-    currentParticipants: 22,
-    category: 'Sustainable Design',
-    level: 'Intermediate',
-    tags: ['Sustainability', 'Green Building', 'LEED'],
-    slug: 'sustainable-design-green-building',
-    learningObjectives: [
-      'Understand sustainable design principles',
-      'Navigate LEED certification requirements',
-      'Implement energy-efficient design strategies',
-      'Conduct environmental impact assessments',
-      'Develop comprehensive sustainability plans'
-    ],
-    prerequisites: [
-      'Basic design or engineering knowledge',
-      'Interest in sustainability and environmental issues',
-      'No prior LEED experience required'
-    ],
-    whatYouWillLearn: [
-      'Sustainable design fundamentals',
-      'LEED rating system overview',
-      'Energy efficiency strategies',
-      'Water conservation techniques',
-      'Environmental impact assessment'
-    ],
-    curriculum: [
-      { title: 'Sustainable Design Principles', description: 'Core concepts of sustainable design', duration: '1.5 hours' },
-      { title: 'LEED Certification Overview', description: 'Understanding LEED rating systems and requirements', duration: '2 hours' },
-      { title: 'Energy Efficiency', description: 'Design strategies for energy conservation', duration: '1.5 hours' },
-      { title: 'Water & Materials', description: 'Water conservation and sustainable materials', duration: '1 hour' },
-      { title: 'Environmental Assessment', description: 'Impact assessment and documentation', duration: '1 hour' }
-    ]
-  }
-];
 
 interface PageProps {
   params: Promise<{
@@ -340,12 +64,37 @@ interface PageProps {
   }>;
 }
 
-export default async function WorkshopDetailsPage({ params }: PageProps) {
-  const resolvedParams = await params;
-  const workshop = workshops.find(w => w.slug === resolvedParams.slug);
+export default function WorkshopDetailsPage() {
+  const params = useParams();
+  const [mounted, setMounted] = useState(false);
 
-  if (!workshop) {
-    notFound();
+  const { data: workshopResponse, isLoading, error } = useGetWorkshopBySlugQuery((params?.slug as string) || '') as {
+    data: { success: boolean; message: string; data: IWorkshop } | undefined;
+    isLoading: boolean;
+    error: any;
+  };
+
+  const workshop = workshopResponse?.data;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!params || !params.slug) {
+    return notFound();
+  }
+
+
+  // Don't render anything until component is mounted to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading workshop details...</p>
+        </div>
+      </div>
+    );
   }
 
   const formatDate = (dateString: string) => {
@@ -367,6 +116,38 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading workshop details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !workshop) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">😔</div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Workshop Not Found</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            The workshop you&apos;re looking for doesn&apos;t exist or has been removed.
+          </p>
+          <Link
+            href="/workshops"
+            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Workshops
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const availabilityPercentage = (workshop.currentParticipants / workshop.maxParticipants) * 100;
   const isAlmostFull = availabilityPercentage > 80;
   const isFull = workshop.currentParticipants >= workshop.maxParticipants;
@@ -376,9 +157,11 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0">
-          <img
+          <Image
             src={workshop.image}
             alt={workshop.title}
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover opacity-30"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-blue-900/85 to-indigo-900/85"></div>
@@ -494,7 +277,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">About This Workshop</h2>
               </div>
               <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                {workshop.detailedDescription}
+                {workshop.detailedDescription || 'Detailed description not available.'}
               </p>
               <div className="flex items-center text-blue-600 dark:text-blue-400 font-semibold">
                 <Zap className="w-5 h-5 mr-2" />
@@ -511,7 +294,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">What You will Achieve</h2>
               </div>
               <div className="grid gap-4">
-                {workshop.learningObjectives?.map((objective, index) => (
+                {(workshop.learningObjectives || []).map((objective: string, index: number) => (
                   <div key={index} className="group flex items-start bg-white/60 dark:bg-gray-800/60 rounded-xl p-4 border border-emerald-100 dark:border-emerald-800 hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                     <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mr-4 mt-1 group-hover:animate-bounce">
                       <CheckCircle className="w-5 h-5 text-white" />
@@ -531,7 +314,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your Learning Journey</h2>
               </div>
               <div className="grid md:grid-cols-2 gap-6">
-                {workshop.whatYouWillLearn?.map((item, index) => (
+                {(workshop.whatYouWillLearn || []).map((item: string, index: number) => (
                   <div key={index} className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-violet-100 dark:border-violet-800 hover:border-violet-300 dark:hover:border-violet-600 transition-all duration-300 hover:shadow-xl hover:scale-105">
                     <div className="flex items-center mb-3">
                       <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl flex items-center justify-center font-bold mr-4 group-hover:animate-pulse">
@@ -556,7 +339,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Workshop Curriculum</h2>
               </div>
               <div className="space-y-4">
-                {workshop.curriculum?.map((module, index) => (
+                {(workshop.curriculum || []).map((module: ICurriculum, index: number) => (
                   <div key={index} className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-amber-800 hover:border-amber-300 dark:hover:border-amber-600 transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -595,7 +378,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                   <div>
                     <h3 className="font-bold text-rose-800 dark:text-rose-200 mb-3">What you should know before joining</h3>
                     <ul className="space-y-3">
-                      {workshop.prerequisites?.map((prereq, index) => (
+                      {(workshop.prerequisites || []).map((prereq: string, index: number) => (
                         <li key={index} className="flex items-start group">
                           <div className="w-6 h-6 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full flex items-center justify-center mr-3 mt-0.5 group-hover:animate-pulse">
                             <span className="w-2 h-2 bg-white rounded-full"></span>
@@ -637,7 +420,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                   </div>
                 </div>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
-                  {workshop.instructorBio}
+                  {workshop.instructorBio || 'Experienced instructor with deep knowledge in this field.'}
                 </p>
               </div>
             </div>
@@ -747,7 +530,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">Skills You will Master</h3>
               </div>
               <div className="flex flex-wrap gap-3">
-                {workshop.tags.map((tag, index) => (
+                {(workshop.tags || []).map((tag: string, index: number) => (
                   <span
                     key={index}
                     className="group px-4 py-2 bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-900/30 dark:to-blue-900/30 text-cyan-700 dark:text-cyan-300 text-sm font-semibold rounded-full border border-cyan-200 dark:border-cyan-800 hover:border-cyan-300 dark:hover:border-cyan-600 transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer"
@@ -796,7 +579,7 @@ export default async function WorkshopDetailsPage({ params }: PageProps) {
             Ready to Transform Your Skills?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join this exclusive workshop and gain the expertise you need to advance your career in {workshop.category.toLowerCase()}.
+            Join this exclusive workshop and gain the expertise you need to advance your career in {workshop.category?.toLowerCase() || 'this field'}.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <button
