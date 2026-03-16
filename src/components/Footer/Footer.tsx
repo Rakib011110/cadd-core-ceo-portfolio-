@@ -17,16 +17,16 @@ const Footer = () => {
 
         {/* Center: Social Icons */}
         <div className="flex space-x-5 text-xl">
-          <a
+          {/* <a
             href="https://github.com/yourusername"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-600 transition duration-300"
             aria-label="GitHub">
             <FaGithub />
-          </a>
+          </a> */}
           <a
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/in/hachnayen"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-600 transition duration-300"
@@ -34,7 +34,7 @@ const Footer = () => {
             <FaLinkedin />
           </a>
           <a
-            href="mailto:your@email.com"
+            href="mailto:hachnayen@gmail.com"
             className="hover:text-blue-600 transition duration-300"
             aria-label="Email">
             <FaEnvelope />
